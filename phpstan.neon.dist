@@ -1,0 +1,14 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+        - lib
+        - migrations
+    excludePaths:
+        - src/Kernel.php
+        - tests/*/data/*
+        - tests/bootstrap.php
