@@ -18,6 +18,16 @@ parameters:
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
+			path: lib/Nines/UserBundle/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: lib/Nines/UserBundle/Services/UserManager.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			count: 1
 			path: lib/Nines/UtilBundle/DependencyInjection/Configuration.php
 
 		-
