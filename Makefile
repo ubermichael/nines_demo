@@ -51,6 +51,14 @@ reset: ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:schema:validate
 	$(CONSOLE) doctrine:fixtures:load --no-interaction
 
+## -- Yarn assets
+
+yarn.lock: package.json
+	$(YARN) upgrade
+
+yarn: ## Install yarn assets
+	$(YARN) install
+
 ## -- Test targets
 
 test: ## Run the tests
@@ -72,3 +80,9 @@ fix: ## Fix the code with the CS rules
 
 fix-all: ## Ignore the CS cache and fix the code with the CS rules
 	$(PHPCSF) fix --using-cache=no
+
+twiglint:
+	$(CONSOLE) lint:twig config lib/Nines
+
+yamllint:
+	$(CONSOLE) lint:yaml templates lib/Nines

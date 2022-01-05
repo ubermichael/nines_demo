@@ -1,6 +1,21 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Access to property \\$associationMappings on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 2
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
+			message: "#^Access to property \\$fieldMappings on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 1
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
+			message: "#^Access to property \\$table on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 1
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
 			path: lib/Nines/UtilBundle/DependencyInjection/Configuration.php
