@@ -6,11 +6,6 @@ parameters:
 			path: lib/Nines/UtilBundle/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: lib/Nines/UtilBundle/Entity/AbstractEntity.php
-
-		-
 			message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\)$#"
 			count: 1
 			path: lib/Nines/UtilBundle/Services/EntityLinker.php
