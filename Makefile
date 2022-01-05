@@ -37,7 +37,7 @@ cc: ## Clear the symfony cache
 
 purge: ## Remove cache and log files
 	@rm -rf var/cache/*/*
-	@rm var/logs/*
+	@rm var/log/*
 	$(CONSOLE) cache:warmup
 
 assets: ## Link assets into /public

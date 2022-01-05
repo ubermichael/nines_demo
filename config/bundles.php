@@ -12,7 +12,9 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
-    Nines\UtilBundle\NinesUtilBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+
+    Nines\MakerBundle\NinesMakerBundle::class => ['dev' => true],
+    Nines\UtilBundle\NinesUtilBundle::class => ['all' => true],
 ];
