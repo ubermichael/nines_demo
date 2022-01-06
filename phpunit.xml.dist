@@ -8,9 +8,9 @@
          bootstrap="tests/bootstrap.php"
          cacheResult="true"
          cacheResultFile="var/cache/test/phpunit.cache"
-         convertDeprecationsToExceptions="false"
->
+         convertDeprecationsToExceptions="false">
     <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled=1"/>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <ini name="memory_limit" value="-1"/>

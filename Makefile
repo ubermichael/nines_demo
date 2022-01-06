@@ -11,6 +11,7 @@ CONSOLE = $(PHP) bin/console
 PHPUNIT = ./vendor/bin/phpunit
 PHPSTAN = ./vendor/bin/phpstan
 PHPCSF = ./vendor/bin/php-cs-fixer
+TWIGCS = ./vendor/bin/twigcs
 
 # Misc Makefile stuff
 .DEFAULT_GOAL = help
@@ -69,6 +70,9 @@ test: ## Run the tests
 stan: ## Run static analysis
 	$(PHPSTAN) analyze
 
+stan.cc: ## Clear the static analysis cache
+	$(PHPSTAN) clear-result-cache
+
 baseline: ## Generate a new phpstan baseline file
 	$(PHPSTAN) analyze --generate-baseline
 
@@ -81,8 +85,11 @@ fix: ## Fix the code with the CS rules
 fix-all: ## Ignore the CS cache and fix the code with the CS rules
 	$(PHPCSF) fix --using-cache=no
 
-twiglint:
-	$(CONSOLE) lint:twig config lib/Nines
+twiglint: ## Check the twig templates for syntax errors
+	$(CONSOLE) lint:twig templates lib/Nines
+
+twigcs: ## Check the twig templates against the coding standards
+	$(TWIGCS) templates lib/Nines/*/templates
 
 yamllint:
 	$(CONSOLE) lint:yaml templates lib/Nines
