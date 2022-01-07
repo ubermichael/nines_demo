@@ -1,0 +1,9 @@
+# config/packages/security.yaml
+security:
+    encoders:
+        Nines\UserBundle\Entity\User:
+            algorithm: plaintext
+    firewalls:
+        # replace 'main' by the name of your own firewall
+        main:
+            http_basic: ~
