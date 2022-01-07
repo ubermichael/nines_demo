@@ -23,3 +23,10 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+# Yarn packages
+public/yarn
+
+# Bundle assets
+templates/jquery.collection.html.twig
+public/js/jquery.collection.js

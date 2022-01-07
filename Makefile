@@ -23,73 +23,75 @@ help: ## Outputs this help screen
 ## -- Composer targets
 
 install: composer.lock ## Installs vendors from composer.lock
-	$(COMPOSER) install
+	@$(COMPOSER) install
 
 update: ## Updates vendors
-	$(COMPOSER) update
+	@$(COMPOSER) update
 
 composer.lock: update
 
 ## -- Console targets
 
 cc: ## Clear the symfony cache
-	$(CONSOLE) cache:clear
-	$(CONSOLE) cache:warmup
+	@$(CONSOLE) cache:clear
+	@$(CONSOLE) cache:warmup
 
 purge: ## Remove cache and log files
 	@rm -rf var/cache/*/*
 	@rm var/log/*
-	$(CONSOLE) cache:warmup
+	@$(CONSOLE) cache:warmup
 
 assets: ## Link assets into /public
-	$(CONSOLE) assets:install --symlink
+	@$(CONSOLE) assets:install --symlink
 
 reset: ## Drop the database and recreate it with fixtures
-	$(CONSOLE) doctrine:cache:clear-metadata
-	$(CONSOLE) doctrine:database:create --if-not-exists
-	$(CONSOLE) doctrine:schema:drop --force
-	$(CONSOLE) doctrine:schema:create
-	$(CONSOLE) doctrine:schema:validate
-	$(CONSOLE) doctrine:fixtures:load --no-interaction
+	@$(CONSOLE) doctrine:cache:clear-metadata
+	@$(CONSOLE) doctrine:database:create --if-not-exists
+	@$(CONSOLE) doctrine:schema:drop --force
+	@$(CONSOLE) doctrine:schema:create
+	@$(CONSOLE) doctrine:schema:validate
+	@$(CONSOLE) doctrine:fixtures:load --no-interaction
 
 ## -- Yarn assets
 
 yarn.lock: package.json
-	$(YARN) upgrade
+	@$(YARN) upgrade
 
 yarn: ## Install yarn assets
-	$(YARN) install
+	@$(YARN) install
 
 ## -- Test targets
 
 test: ## Run the tests
-	$(PHPUNIT) --stop-on-error --stop-on-failure
+	@$(PHPUNIT) --stop-on-error --stop-on-failure
 
 ## -- Coding standards targets
 
+lint-all: stan.cc stan lint twiglint twigcs yamllint
+
 stan: ## Run static analysis
-	$(PHPSTAN) analyze
+	@$(PHPSTAN) analyze
 
 stan.cc: ## Clear the static analysis cache
-	$(PHPSTAN) clear-result-cache
+	@$(PHPSTAN) clear-result-cache
 
 baseline: ## Generate a new phpstan baseline file
-	$(PHPSTAN) analyze --generate-baseline
+	@$(PHPSTAN) analyze --generate-baseline
 
 lint: ## Check the code against the CS rules
-	$(PHPCSF) fix --dry-run -v
+	@$(PHPCSF) fix --dry-run -v
 
 fix: ## Fix the code with the CS rules
-	$(PHPCSF) fix
+	@$(PHPCSF) fix
 
 fix-all: ## Ignore the CS cache and fix the code with the CS rules
-	$(PHPCSF) fix --using-cache=no
+	@$(PHPCSF) fix --using-cache=no
 
 twiglint: ## Check the twig templates for syntax errors
-	$(CONSOLE) lint:twig templates lib/Nines
+	@$(CONSOLE) lint:twig templates lib/Nines
 
 twigcs: ## Check the twig templates against the coding standards
-	$(TWIGCS) templates lib/Nines/*/templates
+	@$(TWIGCS) templates lib/Nines/*/templates
 
 yamllint:
-	$(CONSOLE) lint:yaml templates lib/Nines
+	@$(CONSOLE) lint:yaml templates lib/Nines
