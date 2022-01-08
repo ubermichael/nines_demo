@@ -45,12 +45,12 @@ assets: ## Link assets into /public
 	@$(CONSOLE) assets:install --symlink
 
 reset: ## Drop the database and recreate it with fixtures
-	@$(CONSOLE) doctrine:cache:clear-metadata
-	@$(CONSOLE) doctrine:database:create --if-not-exists
-	@$(CONSOLE) doctrine:schema:drop --force
-	@$(CONSOLE) doctrine:schema:create
-	@$(CONSOLE) doctrine:schema:validate
-	@$(CONSOLE) doctrine:fixtures:load --no-interaction
+	@$(CONSOLE) doctrine:cache:clear-metadata -q
+	@$(CONSOLE) doctrine:database:drop --if-exists --force -q
+	@$(CONSOLE) doctrine:database:create -q
+	@$(CONSOLE) doctrine:schema:create -q
+	@$(CONSOLE) doctrine:schema:validate -q
+	@$(CONSOLE) doctrine:fixtures:load -q --no-interaction
 
 ## -- Yarn assets
 
@@ -62,7 +62,13 @@ yarn: ## Install yarn assets
 
 ## -- Test targets
 
+testdb: ## Create a test database and load the fixtures in it
+	@$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
+	@$(CONSOLE) --env=test doctrine:database:create --quiet
+	@$(CONSOLE) --env=test doctrine:schema:create --quiet
+
 test: ## Run the tests
+	@$(CONSOLE) --env=test doctrine:fixtures:load -n -q --purge-with-truncate
 	@$(PHPUNIT) --stop-on-error --stop-on-failure
 
 ## -- Coding standards targets

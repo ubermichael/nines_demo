@@ -7,6 +7,17 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    router.request_context.scheme: '%env(string:ROUTE_PROTOCOL)%'
+    router.request_context.host: '%env(string:ROUTE_HOST)%'
+    router.request_context.base_url: '%env(string:ROUTE_BASE)%'
+
+    asset.request_context.base_path: '%env(string:ROUTE_BASE)%'
+    asset.request_context.secure: auto
+
+    dhil.matomo_enabled: '%env(bool:MATOMO_ENABLED)%'
+    dhil.matomo_url: ~
+    dhil.matomo_siteid: ~
+    dhil.matomo_domain: ~
 
 services:
     # default configuration for services in *this* file
