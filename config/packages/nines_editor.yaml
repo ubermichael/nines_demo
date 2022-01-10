@@ -1,2 +1,2 @@
 nines_editor:
-    upload_dir: public/uploads/tinymce
+    upload_dir: 'data/%kernel.environment%/tinymce'

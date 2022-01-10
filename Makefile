@@ -70,6 +70,7 @@ testdb: ## Create a test database and load the fixtures in it
 test: ## Run the tests
 	@$(CONSOLE) --env=test doctrine:fixtures:load -n -q --purge-with-truncate
 	@$(PHPUNIT) --stop-on-error --stop-on-failure
+	@rm -rf data/test
 
 ## -- Coding standards targets
 
