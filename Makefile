@@ -50,7 +50,7 @@ reset: ## Drop the database and recreate it with fixtures
 	@$(CONSOLE) doctrine:database:create -q
 	@$(CONSOLE) doctrine:schema:create -q
 	@$(CONSOLE) doctrine:schema:validate -q
-	@$(CONSOLE) doctrine:fixtures:load -q --no-interaction
+	@$(CONSOLE) doctrine:fixtures:load -q --no-interaction --group=test
 
 ## -- Yarn assets
 
@@ -63,14 +63,21 @@ yarn: ## Install yarn assets
 ## -- Test targets
 
 testdb: ## Create a test database and load the fixtures in it
-	@$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
-	@$(CONSOLE) --env=test doctrine:database:create --quiet
-	@$(CONSOLE) --env=test doctrine:schema:create --quiet
+	@$(CONSOLE) --env=test doctrine:cache:clear-metadata -q
+	@$(CONSOLE) --env=test doctrine:database:drop --if-exists --force -q
+	@$(CONSOLE) --env=test doctrine:database:create -q
+	@$(CONSOLE) --env=test doctrine:schema:create -q
+	@$(CONSOLE) --env=test doctrine:schema:validate -q
+	@$(CONSOLE) --env=test doctrine:fixtures:load -q --no-interaction --group=test
 
-test: ## Run the tests
-	@$(CONSOLE) --env=test doctrine:fixtures:load -n -q --purge-with-truncate
-	@$(PHPUNIT) --stop-on-error --stop-on-failure
+testclean: ## Clean up any test files
 	@rm -rf data/test
+
+test: testclean testdb ## Run all tests
+	@$(PHPUNIT) --stop-on-error --stop-on-failure
+
+testapp: testclean testdb
+	@$(PHPUNIT) --stop-on-error --stop-on-failure ./tests
 
 ## -- Coding standards targets
 

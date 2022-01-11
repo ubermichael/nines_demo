@@ -47,3 +47,5 @@ security:
         - { path: ^/request$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/, roles: ROLE_USER }

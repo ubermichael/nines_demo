@@ -26,13 +26,13 @@
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                        <span class="icon-bar"></span> <span class="icon-bar"></span>
                     </button>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
+                    {{ knp_menu_render('blog_pages') }}
+                    {{ knp_menu_render('blog_posts') }}
                     {{ knp_menu_render('nines_user_nav') }}
                 </div><!--/.nav-collapse -->
             </div>
@@ -48,7 +48,8 @@
             {% for type, messages in app.session.flashbag.all() %}
                 {% for message in messages %}
                     <div class="alert alert-{{ type }}">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
                         {{ message }}
                     </div>
                 {% endfor %}
@@ -61,8 +62,7 @@
         <footer class="footer">
             <div class="container">
                 <p>
-                    <b>Title</b>
-                    <br/>
+                    <b>Title</b> <br />
                 </p>
             </div>
         </footer>
