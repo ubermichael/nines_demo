@@ -30,3 +30,4 @@ public/yarn
 # Bundle assets
 templates/jquery.collection.html.twig
 public/js/jquery.collection.js
+data
