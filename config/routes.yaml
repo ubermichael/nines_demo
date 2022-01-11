@@ -1,4 +1,7 @@
 # config/routes.yaml
+nines_blog:
+    resource: '@NinesBlogBundle/config/routes.yaml'
+
 nines_editor:
     resource: '@NinesEditorBundle/config/routes.yaml'
     prefix: editor
