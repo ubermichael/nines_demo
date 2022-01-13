@@ -17,3 +17,4 @@ twig:
         matomo_url: '%dhil.matomo_url%'
         matomo_siteid: '%dhil.matomo_siteid%'
         matomo_domain: '%dhil.matomo_domain%'
+        comment_service: '@Nines\FeedbackBundle\Services\CommentService'

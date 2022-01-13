@@ -1,5 +1,5 @@
 nines_util:
     trim_length: 50
-    routing: ~
-#    routing:
-#        - { class: App\Entity\Foo, route: foo_show }
+    routing:
+        - { class: Nines\BlogBundle\Entity\Page, route: nines_blog_page_show }
+        - { class: Nines\BlogBundle\Entity\Post, route: nines_blog_post_show }
