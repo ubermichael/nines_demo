@@ -3,6 +3,3 @@ nines_feedback:
     public_status: Name 2
     subject: New feedback received
     sender: noreply@example.com
-    recipients:
-        - user@example.com
-        - another@example.com

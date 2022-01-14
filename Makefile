@@ -63,6 +63,14 @@ yarn.lock: package.json
 yarn: ## Install yarn assets
 	$(YARN) install
 
+## -- Container debug targets
+
+dump-params: ## List all of the nines container parameters
+	$(CONSOLE) debug:container --parameters | grep '^\s*nines'
+
+dump-env:
+	$(CONSOLE) debug:container --env-vars
+
 ## -- Test targets
 
 testdb: ## Create a test database and load the fixtures in it
