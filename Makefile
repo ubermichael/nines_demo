@@ -3,6 +3,7 @@ COMPOSER = /usr/local/bin/composer
 SYMFONY = /usr/local/bin/symfony
 YARN = /usr/local/bin/yarn
 PHP = /usr/local/bin/php
+BREW = /usr/local/bin/brew
 
 # Aliases
 CONSOLE = $(PHP) bin/console
@@ -68,8 +69,20 @@ yarn: ## Install yarn assets
 dump-params: ## List all of the nines container parameters
 	$(CONSOLE) debug:container --parameters | grep '^\s*nines'
 
-dump-env:
+dump-env: ## Show all environment variables in the container
 	$(CONSOLE) debug:container --env-vars
+
+dump-autowire: ## Show autowireable services
+	$(CONSOLE) debug:autowiring nines --all
+
+## -- Useful development services
+
+mailhog-start: ## Start the email catcher
+	$(BREW) services start mailhog
+	open http://localhost:8025
+
+mailhog-stop: ## Stop the email catcher
+	$(BREW) services stop mailhog
 
 ## -- Test targets
 
@@ -84,8 +97,8 @@ testdb: ## Create a test database and load the fixtures in it
 testclean: ## Clean up any test files
 	rm -rf data/test
 
-test: testclean testdb ## Run all tests
-	$(PHPUNIT) --stop-on-error --stop-on-failure
+test: testclean testdb ## Run all tests. Use optional path=/path/to/tests to limit target
+	$(PHPUNIT) --stop-on-error --stop-on-failure $(path)
 
 testapp: testclean testdb
 	$(PHPUNIT) --stop-on-error --stop-on-failure ./tests
