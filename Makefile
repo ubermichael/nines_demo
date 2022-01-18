@@ -21,8 +21,15 @@ TWIGCS = ./vendor/bin/twigcs
 # Silence output slightly
 .SILENT:
 
+# Useful URLs
+LOCAL=http://localhost/newnines/public
+
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+
+## -- General targets
+open: ## Open the project home page in a browser
+	open $(LOCAL)
 
 ## -- Composer targets
 
@@ -100,12 +107,20 @@ testclean: ## Clean up any test files
 test: testclean testdb ## Run all tests. Use optional path=/path/to/tests to limit target
 	$(PHPUNIT) --stop-on-error --stop-on-failure $(path)
 
-testapp: testclean testdb
-	$(PHPUNIT) --stop-on-error --stop-on-failure ./tests
+testcover: testclean testdb ## Generate a test cover report
+	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
+	open $(LOCAL)/dev/coverage/index.html
 
 ## -- Coding standards targets
 
 lint-all: stan.cc stan lint twiglint twigcs yamllint
+
+symlint: ## Run the symfony linting checks
+	$(SYMFONY) security:check --quiet
+	$(CONSOLE) lint:yaml --quiet config --parse-tags
+	$(CONSOLE) lint:twig --quiet templates
+	$(CONSOLE) lint:container --quiet
+	$(CONSOLE) doctrine:schema:validate --quiet --skip-sync -vvv --no-interaction
 
 stan: ## Run static analysis
 	$(PHPSTAN) analyze

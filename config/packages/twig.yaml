@@ -18,3 +18,4 @@ twig:
         matomo_siteid: '%dhil.matomo_siteid%'
         matomo_domain: '%dhil.matomo_domain%'
         comment_service: '@Nines\FeedbackBundle\Services\CommentService'
+        linker: '@Nines\UtilBundle\Services\EntityLinker'
