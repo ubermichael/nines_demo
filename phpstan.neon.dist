@@ -13,3 +13,4 @@ parameters:
         - src/Kernel.php
         - tests/*/data/*
         - tests/bootstrap.php
+    treatPhpDocTypesAsCertain: false

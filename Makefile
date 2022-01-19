@@ -115,15 +115,13 @@ testcover: testclean testdb ## Generate a test cover report
 
 lint-all: stan.cc stan lint twiglint twigcs yamllint
 
-symlint: ## Run the symfony linting checks
+symlint: yamllint twiglint ## Run the symfony linting checks
 	$(SYMFONY) security:check --quiet
-	$(CONSOLE) lint:yaml --quiet config --parse-tags
-	$(CONSOLE) lint:twig --quiet templates
 	$(CONSOLE) lint:container --quiet
 	$(CONSOLE) doctrine:schema:validate --quiet --skip-sync -vvv --no-interaction
 
 stan: ## Run static analysis
-	$(PHPSTAN) analyze
+	$(PHPSTAN) analyze $(path)
 
 stan.cc: ## Clear the static analysis cache
 	$(PHPSTAN) clear-result-cache
@@ -132,13 +130,13 @@ baseline: ## Generate a new phpstan baseline file
 	$(PHPSTAN) analyze --generate-baseline
 
 lint: ## Check the code against the CS rules
-	$(PHPCSF) fix --dry-run -v
+	$(PHPCSF) fix --dry-run -v $(path)
 
 fix: ## Fix the code with the CS rules
-	$(PHPCSF) fix
+	$(PHPCSF) fix $(path)
 
 fix-all: ## Ignore the CS cache and fix the code with the CS rules
-	$(PHPCSF) fix --using-cache=no
+	$(PHPCSF) fix --using-cache=no $(path)
 
 twiglint: ## Check the twig templates for syntax errors
 	$(CONSOLE) lint:twig templates lib/Nines
