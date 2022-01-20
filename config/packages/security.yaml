@@ -50,4 +50,10 @@ security:
 
         - { path: ^/editor/upload, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
+        # media bundle
+        - { path: ^/audio, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/image, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/pdf, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # keep the rest of the site private
         - { path: ^/, roles: ROLE_USER }
