@@ -2,19 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Repository;
 
 use App\Entity\Work;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Work find($id, $lockMode = null, $lockVersion = null)
@@ -35,12 +28,22 @@ class WorkRepository extends ServiceEntityRepository {
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('work');
-        $qb->andWhere('work.column LIKE :q');
-        $qb->orderBy('work.column', 'ASC');
+        $qb->andWhere('work.url LIKE :q');
+        $qb->orderBy('work.url', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
+
+    public function searchQuery(string $q) : Query {
+        $qb = $this->createQueryBuilder('work');
+        $qb->addSelect('MATCH (work.url) AGAINST(:q BOOLEAN) as HIDDEN score');
+        $qb->andHaving('score > 0');
+        $qb->orderBy('score', 'DESC');
+        $qb->setParameter('q', $q);
+
+        return $qb->getQuery();
+    }
+
 }

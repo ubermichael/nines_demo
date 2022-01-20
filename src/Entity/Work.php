@@ -18,6 +18,9 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity(repositoryClass=WorkRepository::class)
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="work_ft", columns={"url"}, flags={"fulltext"}),
+ * })
  */
 class Work extends AbstractEntity implements ValueInterface {
     use ValueTrait;
