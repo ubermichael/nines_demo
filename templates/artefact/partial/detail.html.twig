@@ -1,0 +1,28 @@
+
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Title</th>
+            <td>
+                                                            {{ artefact.title }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+                                                            {{ artefact.description|raw }}
+                                  </td>
+          </tr>
+          
+          <tr>
+        <th>Created</th>
+        <td>{{ artefact.created|date }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ artefact.updated|date }}</td>
+    </tr>
+    </tbody>
+</table>
+
+

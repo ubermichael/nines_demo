@@ -1,0 +1,28 @@
+
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Title</th>
+            <td>
+                                                            {{ document.title }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+                                                            {{ document.description|raw }}
+                                  </td>
+          </tr>
+          
+          <tr>
+        <th>Created</th>
+        <td>{{ document.created|date }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ document.updated|date }}</td>
+    </tr>
+    </tbody>
+</table>
+
+

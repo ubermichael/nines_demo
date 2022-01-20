@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Title List{% endblock %}
+
+{% block pageheader %}
+    <h1>Title List</h1>
+    <p class="count">
+        Displaying {{ titles|length }} titles of {{ titles.getTotalItemCount }} total.
+    </p>
+ {% endblock %} 
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+            <a href="{{ path('title_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            {% endif %}
+
+            <a href="{{ path('title_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+
+    {% embed 'title/partial/table.html.twig' %}
+    {% endembed %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(titles) }}
+    </div>
+
+{% endblock %}

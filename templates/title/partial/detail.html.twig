@@ -1,0 +1,40 @@
+
+<table class='table table-bordered table-condensed table-hover table-striped'>
+    <tbody>
+        <tr>
+            <th>Main</th>
+            <td>
+                                                            {{ title.main }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Sub</th>
+            <td>
+                                                            {{ title.sub }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td>
+                                                            {{ title.price }}
+                                  </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+                                                            {{ title.description|raw }}
+                                  </td>
+          </tr>
+          
+          <tr>
+        <th>Created</th>
+        <td>{{ title.created|date }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ title.updated|date }}</td>
+    </tr>
+    </tbody>
+</table>
+
+

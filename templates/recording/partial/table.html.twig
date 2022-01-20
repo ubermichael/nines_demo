@@ -1,0 +1,24 @@
+  <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>                                       <th>Title</th>
+                  
+          </tr>
+      </thead>
+      <tbody>
+      {% for recording in recordings %}
+          <tr>
+              <td>
+                  <a href="{{ path('recording_show', { 'id': recording.id }) }}">
+                      {{ recording.id }}
+                  </a>
+              </td>
+              <td>
+                  {{ recording.title }}
+              </td>
+          
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  

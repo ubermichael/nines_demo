@@ -1,0 +1,15 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}New Title {% endblock %}
+
+    {% block body %}
+    <h1>New Title</h1>
+
+    {% embed 'title/partial/form.html.twig' %}
+    {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}

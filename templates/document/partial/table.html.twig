@@ -1,0 +1,29 @@
+  <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>                                       <th>Title</th>
+                                                         <th>Description</th>
+                  
+          </tr>
+      </thead>
+      <tbody>
+      {% for document in documents %}
+          <tr>
+              <td>
+                  <a href="{{ path('document_show', { 'id': document.id }) }}">
+                      {{ document.id }}
+                  </a>
+              </td>
+              <td>
+                  {{ document.title }}
+              </td>
+          
+              <td>
+                  {{ document.description|raw }}
+              </td>
+          
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  

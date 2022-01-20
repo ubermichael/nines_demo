@@ -1,0 +1,24 @@
+  <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>                                       <th>Title</th>
+                  
+          </tr>
+      </thead>
+      <tbody>
+      {% for bookmark in bookmarks %}
+          <tr>
+              <td>
+                  <a href="{{ path('bookmark_show', { 'id': bookmark.id }) }}">
+                      {{ bookmark.id }}
+                  </a>
+              </td>
+              <td>
+                  {{ bookmark.title }}
+              </td>
+          
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  

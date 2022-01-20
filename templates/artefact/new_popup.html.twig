@@ -1,0 +1,15 @@
+    {% extends 'popup.html.twig' %}
+
+    {% block title %}New Artefact {% endblock %}
+
+    {% block body %}
+    <h1>New Artefact</h1>
+
+    {% embed 'artefact/partial/form.html.twig' %}
+    {% endembed %}
+
+    {% endblock %}
+
+    {% block javascripts %}
+    {% include '@NinesEditor/editor/widget.html.twig' %}
+    {% endblock %}
