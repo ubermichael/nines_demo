@@ -14,7 +14,7 @@ use App\Repository\ArtefactRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class ArtefactRepositoryTest extends ServiceTestCase {
-    private const TYPEAHEAD_QUERY = 'artefact';
+    private const TYPEAHEAD_QUERY = 'title';
 
     private ArtefactRepository $repo;
 

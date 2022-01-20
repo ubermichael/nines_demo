@@ -14,7 +14,7 @@ use App\Repository\BookmarkRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class BookmarkRepositoryTest extends ServiceTestCase {
-    private const TYPEAHEAD_QUERY = 'bookmark';
+    private const TYPEAHEAD_QUERY = 'title';
 
     private BookmarkRepository $repo;
 

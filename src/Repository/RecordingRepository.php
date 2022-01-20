@@ -30,21 +30,20 @@ class RecordingRepository extends ServiceEntityRepository {
 
     public function indexQuery() : Query {
         return $this->createQueryBuilder('recording')
-            ->orderBy('recording.id')
+            ->orderBy('recording.title')
             ->getQuery();
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('recording');
-        $qb->andWhere('recording.column LIKE :q');
-        $qb->orderBy('recording.column', 'ASC');
+        $qb->andWhere('recording.title LIKE :q');
+        $qb->orderBy('recording.title', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
 
-    public function searchTitleQuery(string $q) : Query {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('recording');
         $qb->addSelect('MATCH (recording.title) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

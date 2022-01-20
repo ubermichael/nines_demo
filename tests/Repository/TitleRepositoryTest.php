@@ -14,7 +14,7 @@ use App\Repository\TitleRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class TitleRepositoryTest extends ServiceTestCase {
-    private const TYPEAHEAD_QUERY = 'title';
+    private const TYPEAHEAD_QUERY = 'main';
 
     private TitleRepository $repo;
 

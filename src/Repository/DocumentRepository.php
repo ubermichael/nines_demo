@@ -30,21 +30,20 @@ class DocumentRepository extends ServiceEntityRepository {
 
     public function indexQuery() : Query {
         return $this->createQueryBuilder('document')
-            ->orderBy('document.id')
+            ->orderBy('document.title')
             ->getQuery();
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('document');
-        $qb->andWhere('document.column LIKE :q');
-        $qb->orderBy('document.column', 'ASC');
+        $qb->andWhere('document.title LIKE :q');
+        $qb->orderBy('document.title', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
 
-    public function searchTitleDescriptionQuery(string $q) : Query {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('document');
         $qb->addSelect('MATCH (document.title, document.description) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

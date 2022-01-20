@@ -30,21 +30,20 @@ class BookmarkRepository extends ServiceEntityRepository {
 
     public function indexQuery() : Query {
         return $this->createQueryBuilder('bookmark')
-            ->orderBy('bookmark.id')
+            ->orderBy('bookmark.title')
             ->getQuery();
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('bookmark');
-        $qb->andWhere('bookmark.column LIKE :q');
-        $qb->orderBy('bookmark.column', 'ASC');
+        $qb->andWhere('bookmark.title LIKE :q');
+        $qb->orderBy('bookmark.title', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
 
-    public function searchTitleQuery(string $q) : Query {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('bookmark');
         $qb->addSelect('MATCH (bookmark.title) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

@@ -30,21 +30,20 @@ class ArtefactRepository extends ServiceEntityRepository {
 
     public function indexQuery() : Query {
         return $this->createQueryBuilder('artefact')
-            ->orderBy('artefact.id')
+            ->orderBy('artefact.title')
             ->getQuery();
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('artefact');
-        $qb->andWhere('artefact.column LIKE :q');
-        $qb->orderBy('artefact.column', 'ASC');
+        $qb->andWhere('artefact.title LIKE :q');
+        $qb->orderBy('artefact.title', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
 
-    public function searchTitleDescriptionQuery(string $q) : Query {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('artefact');
         $qb->addSelect('MATCH (artefact.title, artefact.description) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

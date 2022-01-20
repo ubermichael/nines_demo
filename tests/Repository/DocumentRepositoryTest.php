@@ -14,7 +14,7 @@ use App\Repository\DocumentRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class DocumentRepositoryTest extends ServiceTestCase {
-    private const TYPEAHEAD_QUERY = 'document';
+    private const TYPEAHEAD_QUERY = 'title';
 
     private DocumentRepository $repo;
 

@@ -19,7 +19,7 @@ class TitleTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'title';
+    private const TYPEAHEAD_QUERY = 'main';
 
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/title/');
@@ -71,7 +71,7 @@ class TitleTest extends ControllerTestCase {
         }
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
     public function testUserTypeahead() : void {
@@ -81,7 +81,7 @@ class TitleTest extends ControllerTestCase {
         $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
     public function testAdminTypeahead() : void {
@@ -91,7 +91,7 @@ class TitleTest extends ControllerTestCase {
         $this->assertResponseIsSuccessful();
         $this->assertSame('application/json', $response->headers->get('content-type'));
         $json = json_decode($response->getContent());
-        $this->assertCount(4, $json);
+        $this->assertCount(5, $json);
     }
 
     public function testAnonSearch() : void {

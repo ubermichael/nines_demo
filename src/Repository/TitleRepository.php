@@ -30,21 +30,20 @@ class TitleRepository extends ServiceEntityRepository {
 
     public function indexQuery() : Query {
         return $this->createQueryBuilder('title')
-            ->orderBy('title.id')
+            ->orderBy('title.main')
             ->getQuery();
     }
 
     public function typeaheadQuery(string $q) : Query {
-        throw new RuntimeException('Not implemented yet.');
         $qb = $this->createQueryBuilder('title');
-        $qb->andWhere('title.column LIKE :q');
-        $qb->orderBy('title.column', 'ASC');
+        $qb->andWhere('title.main LIKE :q');
+        $qb->orderBy('title.main', 'ASC');
         $qb->setParameter('q', "{$q}%");
 
         return $qb->getQuery();
     }
 
-    public function searchMainSubDescriptionQuery(string $q) : Query {
+    public function searchQuery(string $q) : Query {
         $qb = $this->createQueryBuilder('title');
         $qb->addSelect('MATCH (title.main, title.sub, title.description) AGAINST(:q BOOLEAN) as HIDDEN score');
         $qb->andHaving('score > 0');

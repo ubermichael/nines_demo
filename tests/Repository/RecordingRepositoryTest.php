@@ -14,7 +14,7 @@ use App\Repository\RecordingRepository;
 use Nines\UtilBundle\TestCase\ServiceTestCase;
 
 class RecordingRepositoryTest extends ServiceTestCase {
-    private const TYPEAHEAD_QUERY = 'recording';
+    private const TYPEAHEAD_QUERY = 'title';
 
     private RecordingRepository $repo;
 

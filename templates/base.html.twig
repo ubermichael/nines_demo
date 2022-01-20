@@ -31,6 +31,7 @@
                     </button>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
+                    {{ knp_menu_render('main') }}
                     {{ knp_menu_render('nines_blog_pages') }}
                     {{ knp_menu_render('nines_blog_posts') }}
                     {{ knp_menu_render('nines_feedback') }}
@@ -64,9 +65,14 @@
 
         <footer class="footer">
             <div class="container">
-                <p>
-                    <b>Title</b> <br />
-                </p>
+                <div class='row'>
+                    <div class='col-sm-6'>
+                        <b>Nines Demo App</b>
+                    </div>
+                    <div class='col-sm-6'>
+                        {{ knp_menu_render('footer') }}
+                    </div>
+                </div>
             </div>
         </footer>
 
