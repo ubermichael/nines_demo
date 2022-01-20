@@ -28,7 +28,7 @@ class TitleFixtures extends Fixture implements FixtureGroupInterface {
             $fixture = new Title();
             $fixture->setMain('Main ' . $i);
             $fixture->setSub('Sub ' . $i);
-            $fixture->setPrice($i);
+            $fixture->setPrice((float) $i);
             $fixture->setDescription("<p>This is paragraph {$i}</p>");
             $manager->persist($fixture);
             $this->setReference('title.' . $i, $fixture);

@@ -4,4 +4,8 @@ nines_util:
     routing:
         - { class: Nines\BlogBundle\Entity\Page, route: nines_blog_page_show }
         - { class: Nines\BlogBundle\Entity\Post, route: nines_blog_post_show }
-        - { class: App\Entity\Work, route: work_show }
+        - { class: App\Entity\Artefact, route: artefact_show }
+        - { class: App\Entity\Bookmark, route: bookmark_show }
+        - { class: App\Entity\Document, route: document_show }
+        - { class: App\Entity\Recording, route: recording_show }
+        - { class: App\Entity\Title, route: title_show }
