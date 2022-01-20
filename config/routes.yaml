@@ -12,5 +12,8 @@ nines_editor:
 nines_feedback:
     resource: '@NinesFeedbackBundle/config/routes.yaml'
 
+nines_media:
+    resource: '@NinesMediaBundle/config/routes.yaml'
+
 nines_user:
     resource: '@NinesUserBundle/config/routes.yaml'
