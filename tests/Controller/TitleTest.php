@@ -229,7 +229,7 @@ class TitleTest extends ControllerTestCase {
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/title/1');
+        $crawler = $this->client->request('GET', '/title/5');
         $this->assertResponseIsSuccessful();
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);

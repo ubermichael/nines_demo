@@ -220,7 +220,7 @@ class BookmarkTest extends ControllerTestCase {
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/bookmark/1');
+        $crawler = $this->client->request('GET', '/bookmark/5');
         $this->assertResponseIsSuccessful();
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);

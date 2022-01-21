@@ -58,7 +58,8 @@ class RecordingTest extends ControllerTestCase {
         $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/recording/1');
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->selectLink('Edit')->count());
+        // One for the recording, one for the audio file.
+        $this->assertSame(2, $crawler->selectLink('Edit')->count());
     }
 
     public function testAnonTypeahead() : void {
@@ -220,9 +221,11 @@ class RecordingTest extends ControllerTestCase {
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/recording/1');
+        $crawler = $this->client->request('GET', '/recording/5');
         $this->assertResponseIsSuccessful();
-        $form = $crawler->selectButton('Delete')->form();
+
+        $form = $crawler->filter('form[action="/recording/5"] button')->form();
+
         $this->client->submit($form);
 
         $this->assertResponseRedirects('/recording/', Response::HTTP_FOUND);
