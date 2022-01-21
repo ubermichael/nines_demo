@@ -2,11 +2,18 @@
 
 {% block title %}Recording Details {% endblock %}
 
- {% block pageheader %} 
+ {% block pageheader %}
     <h1>Recording Details</h1>
- {% endblock %} 
+ {% endblock %}
 
 {% block body %}
+
+    {% include '@NinesMedia/audio/ui/player.html.twig' with {
+        'container': recording,
+        'new_path': 'recording_new_audio',
+        'edit_path': 'recording_edit_audio',
+        'delete_path': 'recording_delete_audio'
+    } %}
 
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
     <div class='btn-toolbar pull-right'>

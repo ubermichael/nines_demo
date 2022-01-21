@@ -15,9 +15,14 @@ use App\Form\DocumentType;
 use App\Repository\DocumentRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Controller\PdfControllerTrait;
+use Nines\MediaBundle\Entity\Pdf;
+use Nines\MediaBundle\Service\PdfManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +35,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DocumentController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+    use PdfControllerTrait;
 
     /**
      * @Route("/", name="document_index", methods={"GET"})
@@ -159,5 +165,45 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
         }
 
         return $this->redirectToRoute('document_index');
+    }
+
+    /**
+     * @Route("/{id}/new_pdf", name="document_new_pdf", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @throws Exception
+     */
+    public function newPdf(Request $request, EntityManagerInterface $em, Document $document) : Response {
+        $context = $this->newPdfAction($request, $em, $document, 'document_show');
+
+        return $this->render('document/new_pdf.html.twig', array_merge($context, [
+            'document' => $document,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/edit_pdf/{pdf_id}", name="document_edit_pdf", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("pdf", options={"id" = "pdf_id"})
+     *
+     * @throws Exception
+     */
+    public function editPdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf, PdfManager $fileUploader) : Response {
+        $context = $this->editPdfAction($request, $em, $document, $pdf, 'document_show');
+
+        return $this->render('document/edit_pdf.html.twig', array_merge($context, [
+            'document' => $document,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/delete_pdf/{pdf_id}", name="document_delete_pdf", methods={"DELETE"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("pdf", options={"id" = "pdf_id"})
+     *
+     * @throws Exception
+     */
+    public function deletePdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf) : RedirectResponse {
+        return $this->deletePdfAction($request, $em, $document, $pdf, 'document_index');
     }
 }

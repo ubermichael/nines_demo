@@ -14,7 +14,6 @@ use App\Entity\Recording;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Recording find($id, $lockMode = null, $lockVersion = null)

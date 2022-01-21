@@ -2,9 +2,9 @@
 
 {% block title %}Artefact Details {% endblock %}
 
- {% block pageheader %} 
+ {% block pageheader %}
     <h1>Artefact Details</h1>
- {% endblock %} 
+ {% endblock %}
 
 {% block body %}
 
@@ -27,5 +27,23 @@
 
     {% embed 'artefact/partial/detail.html.twig' %}
     {% endembed %}
+
+    <h2>Artefact Images</h2>
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <div class='btn-toolbar pull-right'>
+            <div class='btn-group'>
+                <a href="{{ path('document_new_pdf', {'id': document.id }) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> Add Pdf </a>
+            </div>
+        </div>
+        <div class='clearfix'></div>
+    {% endif %}
+
+    {% include '@NinesMedia/image/ui/list.html.twig' with {
+        'container': artefact,
+        'path_new': 'artefact_new_image',
+        'path_edit': 'artefact_edit_image',
+        'path_delete': 'artefact_delete_image',
+    } %}
 
 {% endblock %}

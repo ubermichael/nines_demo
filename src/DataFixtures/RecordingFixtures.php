@@ -16,7 +16,6 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nines\MediaBundle\Entity\Audio;
 use Nines\MediaBundle\Service\AudioManager;
-use stdClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RecordingFixtures extends Fixture implements FixtureGroupInterface {

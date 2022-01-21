@@ -15,9 +15,14 @@ use App\Form\RecordingType;
 use App\Repository\RecordingRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Controller\AudioControllerTrait;
+use Nines\MediaBundle\Entity\Audio;
+use Nines\MediaBundle\Service\AudioManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,6 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/recording")
  */
 class RecordingController extends AbstractController implements PaginatorAwareInterface {
+    use AudioControllerTrait;
     use PaginatorTrait;
 
     /**
@@ -159,5 +165,45 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
         }
 
         return $this->redirectToRoute('recording_index');
+    }
+
+    /**
+     * @Route("/{id}/new_audio", name="recording_new_audio", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @throws Exception
+     */
+    public function newAudio(Request $request, EntityManagerInterface $em, Recording $recording) : Response {
+        $context = $this->newAudioAction($request, $em, $recording, 'recording_show');
+
+        return $this->render('recording/new_audio.html.twig', array_merge($context, [
+            'recording' => $recording,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/edit_audio/{audio_id}", name="recording_edit_audio", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("audio", options={"id" = "audio_id"})
+     *
+     * @throws Exception
+     */
+    public function editAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio, AudioManager $fileUploader) : Response {
+        $context = $this->editAudioAction($request, $em, $recording, $audio, 'recording_show');
+
+        return $this->render('recording/edit_audio.html.twig', array_merge($context, [
+            'recording' => $recording,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/delete_audio/{audio_id}", name="recording_delete_audio", methods={"DELETE"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("audio", options={"id" = "audio_id"})
+     *
+     * @throws Exception
+     */
+    public function deleteAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio) : RedirectResponse {
+        return $this->deleteAudioAction($request, $em, $recording, $audio, 'recording_index');
     }
 }

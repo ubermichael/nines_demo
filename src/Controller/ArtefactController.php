@@ -15,9 +15,13 @@ use App\Form\ArtefactType;
 use App\Repository\ArtefactRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\MediaBundle\Controller\ImageControllerTrait;
+use Nines\MediaBundle\Entity\Image;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,6 +33,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/artefact")
  */
 class ArtefactController extends AbstractController implements PaginatorAwareInterface {
+    use ImageControllerTrait;
     use PaginatorTrait;
 
     /**
@@ -159,5 +164,49 @@ class ArtefactController extends AbstractController implements PaginatorAwareInt
         }
 
         return $this->redirectToRoute('artefact_index');
+    }
+
+    /**
+     * @Route("/{id}/new_image", name="artefact_new_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     *
+     * @throws Exception
+     */
+    public function newImage(Request $request, EntityManagerInterface $em, Artefact $artefact) : Response {
+        $context = $this->newImageAction($request, $em, $artefact, 'artefact_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
+
+        return $this->render('artefact/new_image.html.twig', array_merge($context, [
+            'artefact' => $artefact,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/edit_image/{image_id}", name="artefact_edit_image", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     * @ParamConverter("image", options={"id" = "image_id"})
+     *
+     * @throws Exception
+     */
+    public function editImage(Request $request, EntityManagerInterface $em, Artefact $artefact, Image $image) : Response {
+        $context = $this->editImageAction($request, $em, $artefact, $image, 'artefact_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
+
+        return $this->render('artefact/edit_image.html.twig', array_merge($context, [
+            'artefact' => $artefact,
+        ]));
+    }
+
+    /**
+     * @Route("/{id}/delete_image/{image_id}", name="artefact_delete_image", methods={"DELETE"})
+     * @ParamConverter("image", options={"id" = "image_id"})
+     * @IsGranted("ROLE_CONTENT_ADMIN")
+     */
+    public function deleteImage(Request $request, EntityManagerInterface $em, Artefact $artefact, Image $image) : RedirectResponse {
+        return $this->deleteImageAction($request, $em, $artefact, $image, 'artefact_show');
     }
 }

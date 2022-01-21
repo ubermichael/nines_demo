@@ -14,7 +14,6 @@ use App\Entity\Title;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Title find($id, $lockMode = null, $lockVersion = null)

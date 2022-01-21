@@ -14,7 +14,6 @@ use App\Entity\Artefact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use RuntimeException;
 
 /**
  * @method null|Artefact find($id, $lockMode = null, $lockVersion = null)
