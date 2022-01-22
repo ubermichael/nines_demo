@@ -175,6 +175,9 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      */
     public function newAudio(Request $request, EntityManagerInterface $em, Recording $recording) : Response {
         $context = $this->newAudioAction($request, $em, $recording, 'recording_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
 
         return $this->render('recording/new_audio.html.twig', array_merge($context, [
             'recording' => $recording,
@@ -190,6 +193,9 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      */
     public function editAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio, AudioManager $fileUploader) : Response {
         $context = $this->editAudioAction($request, $em, $recording, $audio, 'recording_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
 
         return $this->render('recording/edit_audio.html.twig', array_merge($context, [
             'recording' => $recording,
@@ -204,6 +210,6 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      * @throws Exception
      */
     public function deleteAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio) : RedirectResponse {
-        return $this->deleteAudioAction($request, $em, $recording, $audio, 'recording_index');
+        return $this->deleteAudioAction($request, $em, $recording, $audio, 'recording_show');
     }
 }

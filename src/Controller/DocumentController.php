@@ -175,6 +175,9 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      */
     public function newPdf(Request $request, EntityManagerInterface $em, Document $document) : Response {
         $context = $this->newPdfAction($request, $em, $document, 'document_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
 
         return $this->render('document/new_pdf.html.twig', array_merge($context, [
             'document' => $document,
@@ -190,6 +193,9 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      */
     public function editPdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf, PdfManager $fileUploader) : Response {
         $context = $this->editPdfAction($request, $em, $document, $pdf, 'document_show');
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
 
         return $this->render('document/edit_pdf.html.twig', array_merge($context, [
             'document' => $document,
@@ -204,6 +210,6 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function deletePdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf) : RedirectResponse {
-        return $this->deletePdfAction($request, $em, $document, $pdf, 'document_index');
+        return $this->deletePdfAction($request, $em, $document, $pdf, 'document_show');
     }
 }
