@@ -21,21 +21,6 @@ parameters:
 			path: lib/Nines/BlogBundle/Tests/Controller/PostTest.php
 
 		-
-			message: "#^Return type of call to static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\) contains unresolvable type\\.$#"
-			count: 1
-			path: lib/Nines/DublinCoreBundle/Entity/Value.php
-
-		-
-			message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\)$#"
-			count: 1
-			path: lib/Nines/DublinCoreBundle/Entity/Value.php
-
-		-
-			message: "#^Parameter \\#1 \\$values of method Nines\\\\DublinCoreBundle\\\\Entity\\\\ValueInterface\\:\\:setValues\\(\\) expects Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>&iterable\\<Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>, array\\<Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\> given\\.$#"
-			count: 1
-			path: lib/Nines/DublinCoreBundle/Service/ValueManager.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: lib/Nines/DublinCoreBundle/Tests/Controller/ElementTest.php
@@ -59,16 +44,6 @@ parameters:
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
 			path: lib/Nines/FeedbackBundle/DependencyInjection/Configuration.php
-
-		-
-			message: "#^Return type of call to static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\) contains unresolvable type\\.$#"
-			count: 1
-			path: lib/Nines/FeedbackBundle/Entity/Comment.php
-
-		-
-			message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\)$#"
-			count: 1
-			path: lib/Nines/FeedbackBundle/Entity/Comment.php
 
 		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
@@ -98,6 +73,11 @@ parameters:
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
+			path: lib/Nines/MediaBundle/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			count: 1
 			path: lib/Nines/UserBundle/DependencyInjection/Configuration.php
 
 		-
@@ -107,11 +87,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mime\\\\RawMessage\\:\\:getBody\\(\\)\\.$#"
-			count: 1
-			path: lib/Nines/UserBundle/Tests/Controller/SecurityControllerTest.php
-
-		-
-			message: "#^Property Nines\\\\UserBundle\\\\Tests\\\\Controller\\\\SecurityControllerTest\\:\\:\\$repository \\(Nines\\\\UserBundle\\\\Repository\\\\UserRepository\\) does not accept Doctrine\\\\ORM\\\\EntityRepository\\<Nines\\\\UserBundle\\\\Entity\\\\User\\>\\.$#"
 			count: 1
 			path: lib/Nines/UserBundle/Tests/Controller/SecurityControllerTest.php
 
@@ -126,11 +101,42 @@ parameters:
 			path: lib/Nines/UtilBundle/Services/EntityLinker.php
 
 		-
-			message: "#^Method Nines\\\\UtilBundle\\\\Tests\\\\Services\\\\TextTest\\:\\:searchHighlightData\\(\\) should return array\\<array\\<string\\>\\> but returns array\\<int, array\\<int, array\\<int, string\\>\\|string\\>\\>\\.$#"
-			count: 1
-			path: lib/Nines/UtilBundle/Tests/Services/TextTest.php
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 2
+			path: tests/Controller/ArtefactTest.php
 
 		-
-			message: "#^Method Nines\\\\UtilBundle\\\\Tests\\\\Services\\\\TextTest\\:\\:trimData\\(\\) should return array\\<array\\<string\\>\\> but returns array\\<int, array\\<int, int\\|string\\>\\>\\.$#"
-			count: 1
-			path: lib/Nines/UtilBundle/Tests/Services/TextTest.php
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: tests/Controller/ArtefactTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: tests/Controller/BookmarkTest.php
+
+		-
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 2
+			path: tests/Controller/DocumentTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: tests/Controller/DocumentTest.php
+
+		-
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 2
+			path: tests/Controller/RecordingTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: tests/Controller/RecordingTest.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: tests/Controller/TitleTest.php
+

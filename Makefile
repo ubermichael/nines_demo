@@ -127,8 +127,8 @@ stan: ## Run static analysis
 stan.cc: ## Clear the static analysis cache
 	$(PHPSTAN) clear-result-cache
 
-baseline: ## Generate a new phpstan baseline file
-	$(PHPSTAN) analyze --generate-baseline
+stan.baseline: ## Generate a new phpstan baseline file
+	$(PHPSTAN) analyze --generate-baseline $(path)
 
 lint: ## Check the code against the CS rules
 	$(PHPCSF) fix --dry-run -v $(path)
@@ -136,8 +136,11 @@ lint: ## Check the code against the CS rules
 fix: ## Fix the code with the CS rules
 	$(PHPCSF) fix $(path)
 
-fix-all: ## Ignore the CS cache and fix the code with the CS rules
+fix.all: ## Ignore the CS cache and fix the code with the CS rules
 	$(PHPCSF) fix --using-cache=no $(path)
+
+fix.cc: ## Remove the PHP CS Cache file
+	rm -f var/cache/php_cs.cache
 
 twiglint: ## Check the twig templates for syntax errors
 	$(CONSOLE) lint:twig templates lib/Nines

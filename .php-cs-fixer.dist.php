@@ -30,7 +30,7 @@ $config = new PhpCsFixer\Config();
 
 return $config
     ->setRiskyAllowed(true)
-    ->setUsingCache(false)
+    ->setUsingCache(true)
     ->setCacheFile(__DIR__ . '/var/cache/php_cs.cache')
     ->setFinder($finder)
     ->setRules([
