@@ -10,6 +10,7 @@ parameters:
         - migrations
     excludePaths:
         - lib/Nines/vendor
+        - lib/Nines/*/DependencyInjection
         - src/Kernel.php
         - tests/*/data/*
         - tests/bootstrap.php

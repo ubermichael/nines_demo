@@ -12,6 +12,7 @@ namespace App\Entity;
 
 use App\Repository\TitleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\SolrBundle\Annotation as Solr;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
@@ -19,25 +20,33 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(indexes={
  *     @ORM\Index(name="title_ft", columns={"main", "sub", "description"}, flags={"fulltext"})
  * })
+ * @Solr\Document(
+ *     copyField=@Solr\CopyField(from={"main", "sub"}, to="title", type = "texts"),
+ *     computedFields=@Solr\ComputedField(name="tax_price", getter="getPriceWithTax", type="float")
+ * )
  */
 class Title extends AbstractEntity {
     /**
      * @ORM\Column(type="string")
+     * @Solr\Field(type="text")
      */
     private ?string $main = null;
 
     /**
      * @ORM\Column(type="string")
+     * @Solr\Field(type="text")
      */
     private ?string $sub = null;
 
     /**
      * @ORM\Column(type="integer")
+     * @Solr\Field(type="float")
      */
     private ?float $price = null;
 
     /**
      * @ORM\Column(type="text")
+     * @Solr\Field(type="text", boost=0.5, filters={"strip_tags", "html_entity_decode(51, 'UTF-8')"})
      */
     private ?string $description = null;
 
@@ -90,5 +99,9 @@ class Title extends AbstractEntity {
         $this->description = $description;
 
         return $this;
+    }
+
+    public function getPriceWithTax() : float {
+        return $this->price * 1.05;
     }
 }

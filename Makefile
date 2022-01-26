@@ -105,8 +105,10 @@ test.db: ## Create a test database and load the fixtures in it
 test.clean: ## Clean up any test files
 	rm -rf data/test
 
-test: test.clean test.db ## Run all tests. Use optional path=/path/to/tests to limit target
-	$(PHPUNIT) --stop-on-error --stop-on-failure $(path)
+test.run:
+	$(PHPUNIT) $(path)
+
+test: test.clean test.db test.run ## Run all tests. Use optional path=/path/to/tests to limit target
 
 test.cover: test.clean test.db ## Generate a test cover report
 	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
