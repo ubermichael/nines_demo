@@ -1,0 +1,22 @@
+  <table class="table table-bordered table-condensed table-hover table-striped">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Label 1</th>
+          </tr>
+      </thead>
+      <tbody>
+      {% for poem in poems %}
+          <tr>
+              <td>
+                  <a href="{{ path('poem_show', { 'id': poem.id }) }}">
+                      {{ poem.id }}
+                  </a>
+              </td>
+              <td>
+                  {{ poem.getValues('label-1')|first }}
+              </td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>

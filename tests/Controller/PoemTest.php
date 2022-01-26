@@ -10,92 +10,59 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Repository\BookmarkRepository;
+use App\Repository\PoemRepository;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class BookmarkTest extends ControllerTestCase {
+class PoemTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'title';
+    private const TYPEAHEAD_QUERY = 'poem';
 
     public function testAnonIndex() : void {
-        $crawler = $this->client->request('GET', '/bookmark/');
+        $crawler = $this->client->request('GET', '/poem/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
     public function testUserIndex() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/');
+        $crawler = $this->client->request('GET', '/poem/');
         $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('New')->count());
     }
 
     public function testAdminIndex() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/bookmark/');
+        $crawler = $this->client->request('GET', '/poem/');
         $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('New')->count());
     }
 
     public function testAnonShow() : void {
-        $crawler = $this->client->request('GET', '/bookmark/1');
+        $crawler = $this->client->request('GET', '/poem/1');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
     public function testUserShow() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/1');
+        $crawler = $this->client->request('GET', '/poem/1');
         $this->assertResponseIsSuccessful();
         $this->assertSame(0, $crawler->selectLink('Edit')->count());
     }
 
     public function testAdminShow() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/bookmark/1');
+        $crawler = $this->client->request('GET', '/poem/1');
         $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->selectLink('Edit')->count());
     }
 
-    public function testAnonTypeahead() : void {
-        $this->client->request('GET', '/bookmark/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
-        if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
-            // If authentication is required stop here.
-            return;
-        }
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(5, $json);
-    }
-
-    public function testUserTypeahead() : void {
-        $this->login(UserFixtures::USER);
-        $this->client->request('GET', '/bookmark/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(5, $json);
-    }
-
-    public function testAdminTypeahead() : void {
-        $this->login(UserFixtures::ADMIN);
-        $this->client->request('GET', '/bookmark/typeahead?q=' . self::TYPEAHEAD_QUERY);
-        $response = $this->client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertSame('application/json', $response->headers->get('content-type'));
-        $json = json_decode($response->getContent());
-        $this->assertCount(5, $json);
-    }
-
     public function testAnonSearch() : void {
-        $crawler = $this->client->request('GET', '/bookmark/search');
+        $crawler = $this->client->request('GET', '/poem/search');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);
         if (self::ANON_RESPONSE_CODE === Response::HTTP_FOUND) {
             // If authentication is required stop here.
@@ -103,7 +70,7 @@ class BookmarkTest extends ControllerTestCase {
         }
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'bookmark',
+            'q' => 'poem',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -112,11 +79,11 @@ class BookmarkTest extends ControllerTestCase {
 
     public function testUserSearch() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/search');
+        $crawler = $this->client->request('GET', '/poem/search');
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'bookmark',
+            'q' => 'poem',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -125,11 +92,11 @@ class BookmarkTest extends ControllerTestCase {
 
     public function testAdminSearch() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/bookmark/search');
+        $crawler = $this->client->request('GET', '/poem/search');
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('btn-search')->form([
-            'q' => 'bookmark',
+            'q' => 'poem',
         ]);
 
         $responseCrawler = $this->client->submit($form);
@@ -137,106 +104,101 @@ class BookmarkTest extends ControllerTestCase {
     }
 
     public function testAnonEdit() : void {
-        $crawler = $this->client->request('GET', '/bookmark/1/edit');
+        $crawler = $this->client->request('GET', '/poem/1/edit');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
     public function testUserEdit() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/1/edit');
+        $crawler = $this->client->request('GET', '/poem/1/edit');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminEdit() : void {
         $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/bookmark/1/edit');
+        $formCrawler = $this->client->request('GET', '/poem/1/edit');
         $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'bookmark[title]' => 'Updated Title',
         ]);
         $values = $form->getPhpValues();
-        $values['bookmark']['links'][1]['url'] = 'https://example.com/path/to/new/link';
-        $values['bookmark']['links'][1]['text'] = 'New text';
+        $values['poem']['label-1'][0] = 'Updated Value';
+        $values['poem']['label-1'][1] = 'New Value';
 
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
-        $this->assertResponseRedirects('/bookmark/1', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/poem/1', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
-        $this->assertCount(1, $responseCrawler->filter('a[href="https://example.com/path/to/new/link"]'));
     }
 
     public function testAnonNew() : void {
-        $crawler = $this->client->request('GET', '/bookmark/new');
+        $crawler = $this->client->request('GET', '/poem/new');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
     public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/bookmark/new_popup');
+        $crawler = $this->client->request('GET', '/poem/new_popup');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/new');
+        $crawler = $this->client->request('GET', '/poem/new');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
     public function testUserNewPopup() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/bookmark/new_popup');
+        $crawler = $this->client->request('GET', '/poem/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminNew() : void {
         $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/bookmark/new');
+        $formCrawler = $this->client->request('GET', '/poem/new');
         $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'bookmark[title]' => 'Updated Title',
         ]);
         $values = $form->getPhpValues();
-        $values['bookmark']['links'][0]['url'] = 'https://example.com/path/to/new/link';
-        $values['bookmark']['links'][0]['text'] = 'New text';
+        $values['poem']['label-1'][0] = 'New Value 1';
+        $values['poem']['label-1'][1] = 'New Value 2';
 
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
-        $this->assertResponseRedirects('/bookmark/6', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/poem/6', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
-        $this->assertCount(1, $responseCrawler->filter('a[href="https://example.com/path/to/new/link"]'));
     }
 
     public function testAdminNewPopup() : void {
         $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/bookmark/new');
+        $formCrawler = $this->client->request('GET', '/poem/new');
         $this->assertResponseIsSuccessful();
 
         $form = $formCrawler->selectButton('Save')->form([
-            'bookmark[title]' => 'Updated Title',
         ]);
         $values = $form->getPhpValues();
-        $values['bookmark']['links'][0]['url'] = 'https://example.com/path/to/new/link';
-        $values['bookmark']['links'][0]['text'] = 'New text';
+        $values['poem']['label-1'][0] = 'New Value 1';
+        $values['poem']['label-1'][1] = 'New Value 2';
 
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
-        $this->assertResponseRedirects('/bookmark/7', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/poem/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
     }
 
     public function testAdminDelete() : void {
-        /** @var BookmarkRepository $repo */
-        $repo = self::$container->get(BookmarkRepository::class);
+        /** @var PoemRepository $repo */
+        $repo = self::$container->get(PoemRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/bookmark/5');
+        $crawler = $this->client->request('GET', '/poem/1');
         $this->assertResponseIsSuccessful();
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);
 
-        $this->assertResponseRedirects('/bookmark/', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/poem/', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
 

@@ -38,6 +38,10 @@ class Builder extends AbstractBuilder {
             'route' => 'document_index',
         ]);
 
+        $menu->addChild('Poem', [
+            'route' => 'poem_index',
+        ]);
+
         $menu->addChild('Recording', [
             'route' => 'recording_index',
         ]);

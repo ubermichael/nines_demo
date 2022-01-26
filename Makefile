@@ -48,7 +48,7 @@ cc: ## Clear the symfony cache
 	$(CONSOLE) cache:clear
 	$(CONSOLE) cache:warmup
 
-purge: ## Remove cache and log files
+cc.purge: ## Remove cache and log files
 	rm -rf var/cache/*/*
 	rm var/log/*
 	$(CONSOLE) cache:warmup
@@ -94,7 +94,7 @@ mailhog-stop: ## Stop the email catcher
 
 ## -- Test targets
 
-testdb: ## Create a test database and load the fixtures in it
+test.db: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) --env=test doctrine:database:create --quiet
@@ -102,13 +102,13 @@ testdb: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:schema:validate --quiet
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=test
 
-testclean: ## Clean up any test files
+test.clean: ## Clean up any test files
 	rm -rf data/test
 
-test: testclean testdb ## Run all tests. Use optional path=/path/to/tests to limit target
+test: test.clean test.db ## Run all tests. Use optional path=/path/to/tests to limit target
 	$(PHPUNIT) --stop-on-error --stop-on-failure $(path)
 
-testcover: testclean testdb ## Generate a test cover report
+test.cover: test.clean test.db ## Generate a test cover report
 	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
 	open $(LOCAL)/dev/coverage/index.html
 

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bookmark Details {% endblock %}
+{% block title %}Poem Details {% endblock %}
 
  {% block pageheader %}
-    <h1>Bookmark Details</h1>
+    <h1>Poem Details</h1>
  {% endblock %}
 
 {% block body %}
@@ -11,26 +11,24 @@
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
     <div class='btn-toolbar pull-right'>
         <div class='btn-group'>
-            <a href="{{ path('bookmark_edit', {'id': bookmark.id }) }}" class="btn btn-default">
+            <a href="{{ path('poem_edit', {'id': poem.id }) }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span> Edit
             </a>
         </div>
         <div class='btn-group'>
-            <form class='delete-form' method="post" action="{{ path('bookmark_delete', {'id': bookmark.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <form class='delete-form' method="post" action="{{ path('poem_delete', {'id': poem.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                 <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ bookmark.id) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token("delete" ~ poem.id) }}">
                 <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button>
             </form>
         </div>
     </div>
     {% endif %}
 
-    {% embed 'bookmark/partial/detail.html.twig' %}
+    {% embed 'poem/partial/detail.html.twig' %}
     {% endembed %}
 
-    <h2>Links</h2>
-    {% embed '@NinesMedia/link/partial/list.html.twig' with {
-        'entity': bookmark } %}
+    {% embed '@NinesDublinCore/value/ui/table.html.twig' with {'entity': poem } %}
     {% endembed %}
 
 {% endblock %}

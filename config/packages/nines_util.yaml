@@ -7,5 +7,6 @@ nines_util:
         - { class: App\Entity\Artefact, route: artefact_show }
         - { class: App\Entity\Bookmark, route: bookmark_show }
         - { class: App\Entity\Document, route: document_show }
+        - { class: App\Entity\Poem, route: poem_show }
         - { class: App\Entity\Recording, route: recording_show }
         - { class: App\Entity\Title, route: title_show }

@@ -10,20 +10,22 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Bookmark;
+use App\Entity\Poem;
 
-use Nines\MediaBundle\Form\LinkableType;
-use Nines\MediaBundle\Form\Mapper\LinkableMapper;
+use Nines\DublinCoreBundle\Form\Mapper\DublinCoreMapper;
+use Nines\DublinCoreBundle\Form\ValueType;
+use Nines\DublinCoreBundle\Repository\ElementRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Bookmark form.
+ * Poem form.
  */
-class BookmarkType extends AbstractType {
-    private LinkableMapper $mapper;
+class PoemType extends AbstractType {
+    private ElementRepository $repo;
+
+    private DublinCoreMapper $mapper;
 
     /**
      * Add form fields to $builder.
@@ -31,15 +33,22 @@ class BookmarkType extends AbstractType {
      * @param array<string,mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('title', TextType::class, [
-            'label' => 'Title',
-            'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
-        ]);
-        LinkableType::add($builder, $options);
+        ValueType::add($builder, array_merge($options, ['repo' => $this->repo]));
         $builder->setDataMapper($this->mapper);
+    }
+
+    /**
+     * @required
+     */
+    public function setElementRepository(ElementRepository $repo) : void {
+        $this->repo = $repo;
+    }
+
+    /**
+     * @required
+     */
+    public function setDublinCoreMapper(DublinCoreMapper $mapper) : void {
+        $this->mapper = $mapper;
     }
 
     /**
@@ -50,14 +59,7 @@ class BookmarkType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => Bookmark::class,
+            'data_class' => Poem::class,
         ]);
-    }
-
-    /**
-     * @required
-     */
-    public function setLinkableMapper(LinkableMapper $mapper) : void {
-        $this->mapper = $mapper;
     }
 }
