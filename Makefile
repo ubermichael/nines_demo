@@ -1,9 +1,12 @@
+PFX=`brew --prefix`
+
 # Executables
-COMPOSER = /usr/local/bin/composer
-SYMFONY = /usr/local/bin/symfony
-YARN = /usr/local/bin/yarn
-PHP = /usr/local/bin/php
-BREW = /usr/local/bin/brew
+COMPOSER = $(PFX)/bin/composer
+SYMFONY = $(PFX)/bin/symfony
+YARN = $(PFX)/bin/yarn
+PHP = $(PFX)/bin/php
+BREW = $(PFX)/bin/brew
+GIT = $(PFX)/bin/git
 
 # Aliases
 CONSOLE = $(PHP) bin/console
@@ -56,6 +59,12 @@ cc.purge: ## Remove cache and log files
 assets: ## Link assets into /public
 	$(CONSOLE) assets:install --symlink
 
+clean:
+    rm -rf data/{dev,test}/*
+    rm -rf var/cache/{dev,test}/*
+    $(GIT) reflog expire --expire=now --all
+    $(GIT) gc --aggressive --prune=now --quiet
+
 reset: ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) doctrine:database:drop --if-exists --force --quiet
@@ -103,7 +112,10 @@ test.db: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=test
 
 test.clean: ## Clean up any test files
-	rm -rf data/test
+    rm -rf data/test
+    $(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
+    $(CONSOLE) --env=test cache:clear
+    $(CONSOLE) --env=test cache:warmup
 
 test.run:
 	$(PHPUNIT) $(path)
