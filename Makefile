@@ -7,6 +7,7 @@ YARN = $(PFX)/bin/yarn
 PHP = $(PFX)/bin/php
 BREW = $(PFX)/bin/brew
 GIT = $(PFX)/bin/git
+SOLR = $(PFX)/bin/solr
 
 # Aliases
 CONSOLE = $(PHP) bin/console
@@ -28,6 +29,7 @@ TWIGCS = ./vendor/bin/twigcs
 LOCAL='http://localhost/nines_demo/public'
 SOLR='http://localhost:8983/solr/#/nines_demo/core-overview'
 
+## -- Help
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
@@ -60,10 +62,10 @@ assets: ## Link assets into /public
 	$(CONSOLE) assets:install --symlink
 
 clean:
-    rm -rf data/{dev,test}/*
-    rm -rf var/cache/{dev,test}/*
-    $(GIT) reflog expire --expire=now --all
-    $(GIT) gc --aggressive --prune=now --quiet
+	rm -rf var/cache/*/*
+	rm -f var/log/*
+	$(GIT) reflog expire --expire=now --all
+	$(GIT) gc --aggressive --prune=now --quiet
 
 reset: ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
@@ -112,10 +114,11 @@ test.db: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=test
 
 test.clean: ## Clean up any test files
-    rm -rf data/test
-    $(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
-    $(CONSOLE) --env=test cache:clear
-    $(CONSOLE) --env=test cache:warmup
+	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
+	$(CONSOLE) --env=test cache:clear --quiet
+	$(CONSOLE) --env=test cache:warmup --quiet
+	post -c nines_solr_test -type text/xml -d $'<delete><query>*:*</query></delete>' > /dev/null
+
 
 test.run:
 	$(PHPUNIT) $(path)
