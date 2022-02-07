@@ -21,7 +21,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  *     @ORM\Index(name="title_ft", columns={"main", "sub", "description"}, flags={"fulltext"})
  * })
  * @Solr\Document(
- *     copyField=@Solr\CopyField(from={"main", "sub"}, to="title", type="texts"),
+ *     @Solr\CopyField(from={"main", "sub"}, to="title", type="texts"),
+ *     @Solr\CopyField(from={"main", "sub", "description"}, to="content", type="texts"),
  *     computedFields=@Solr\ComputedField(name="tax_price", getter="getPriceWithTax", type="float")
  * )
  */

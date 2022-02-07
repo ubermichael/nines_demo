@@ -12,10 +12,13 @@ namespace App\Controller;
 
 use App\Entity\Title;
 use App\Form\TitleType;
+use App\Index\TitleIndex;
 use App\Repository\TitleRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\SolrBundle\Exception\NotConfiguredException;
+use Nines\SolrBundle\Services\SolrManager;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,21 +49,32 @@ class TitleController extends AbstractController implements PaginatorAwareInterf
 
     /**
      * @Route("/search", name="title_search", methods={"GET"})
+     *
+     * @throws NotConfiguredException
      */
-    public function search(Request $request, TitleRepository $titleRepository) : Response {
+    public function search(Request $request, TitleIndex $index, SolrManager $solr) : Response {
         $q = $request->query->get('q');
+        $result = null;
         if ($q) {
-            $query = $titleRepository->searchQuery($q);
-            $titles = $this->paginator->paginate($query, $request->query->getInt('page', 1), $this->getParameter('page_size'), [
-                'wrap-queries' => true,
+            $filters = $request->query->get('filter', []);
+            $rangeFilters = $request->query->get('filter_range', []);
+
+            $order = null;
+            $m = [];
+            if (preg_match('/^(\\w+).(asc|desc)$/', $request->query->get('order', 'score.desc'), $m)) {
+                $order = [$m[1] => $m[2]];
+            }
+
+            $query = $index->searchQuery($q, $filters, $rangeFilters, $order);
+            $result = $solr->execute($query, $this->paginator, [
+                'page' => (int) $request->query->get('page', 1),
+                'pageSize' => (int) $this->getParameter('page_size'),
             ]);
-        } else {
-            $titles = [];
         }
 
         return $this->render('title/search.html.twig', [
-            'titles' => $titles,
             'q' => $q,
+            'result' => $result,
         ]);
     }
 

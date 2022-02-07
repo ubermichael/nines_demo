@@ -2,55 +2,61 @@
 
 {% block title %}Title Search{% endblock %}
 
- {% block pageheader %} 
+ {% block pageheader %}
     <h1>Title Search</h1>
-    {% if titles|length %}
-    <p class="count">
-        Displaying {{ titles|length }} titles of {{ titles.getTotalItemCount }} total.
-    </p>
-	{% endif %}
- {% endblock %} 
+ {% endblock %}
 
 {% block body %}
 
     <form method="get" action="{{ path('title_search') }}" class="form-horizontal">
-        <fieldset>
-            <legend>Search</legend>
-            <div class='form-group'>
-                <label class='col-sm-2 control-label' for='q'>Search term</label>
-                <div class='col-sm-10'>
-                    <div class='input-group'>
-                        <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" id='btn-search' type="submit">
-                                <span class='glyphicon glyphicon-search'></span>
-                                Search
-                            </button>
-                        </span>
-                    </div>
-                </div>
+        <div class='row'>
+            {% embed '@NinesSolr/search/partial/search_field.html.twig' with {'path': 'title_search'} %}
+            {% endembed %}
+        </div>
+
+        <div class='row'>
+            <div class='col-sm-3'>
+                {% if result %}
+                    {% include '@NinesSolr/search/partial/order.html.twig' with {
+                        'header': 'Result Order',
+                        'options': {
+                            'score.desc': 'Relevance',
+                            'main.asc': 'Title (A to Z)',
+                            'main.desc': 'Title (Z to A)',
+                            'price.asc': 'Price (Low to High)',
+                            'price.desc': 'Price (High to Low)',
+                        }
+                    } %}
+
+                    {% include '@NinesSolr/search/partial/facet_range.html.twig' with {
+                        'facet': result.getFacet('price'),
+                        'filter': 'price',
+                        'header': 'Price',
+                    } %}
+                {% endif %}
             </div>
-            <p>	Full text searching options, if available:</p>
-            <ul>
-                <li><code>shakespeare</code> - shakespeare should be present, but might not be</li>
-                <li><code>shakes*</code> - words starting with shakes should be present</li>
-                <li><code>+agnes</code> - agnes must be present</li>
-                <li><code>-fisher</code> - fisher must not be present</li>
-                <li>Combinations are OK: <code>+agnes -fisher</code> finds Agnes who isn't a Fisher</li>
-                <li>Phrases are OK: <code>"nee agnes"</code> finds rows that contain the literal phrase.
-            </ul>
-        </fieldset>
+
+            <div class='col-sm-9'>
+                {% if result and result.count > 0 %}
+                    {% set pagination = result.paginator %}
+
+                    {% embed '@NinesSolr/search/partial/header.html.twig' with {'pagination': pagination} %}
+                    {% endembed %}
+
+                    {% embed '@NinesSolr/search/partial/result.html.twig' with {'result': result} %}
+                    {% endembed %}
+
+                    {% if pagination %}
+                        <div class="navigation">
+                            {{ knp_pagination_render(pagination) }}
+                        </div>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
     </form>
 
-	{% if titles|length %}
-
-  {% embed 'title/partial/table.html.twig' %}
-  {% endembed %}
-
-    <div class="navigation">
-        {{ knp_pagination_render(titles) }}
-    </div>
-	{% endif %}
 
 {% endblock %}
 

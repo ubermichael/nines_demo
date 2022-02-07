@@ -32,7 +32,7 @@ SOLR=http://localhost:8983/solr/\#/$(PROJECT)/core-overview
 
 ## -- Help
 help: ## Outputs this help screen
-	@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+	@grep -E '(^[a-zA-Z0-9._-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 ## -- General targets
 open: ## Open the project home page in a browser
@@ -134,6 +134,9 @@ solr.clean:
 	-solr delete -c nines_demo_test
 
 solr.index:
+
+solr.open:
+	open $(SOLR)
 
 ## -- Coding standards fixing
 
