@@ -38,17 +38,19 @@ help: ## Outputs this help screen
 open: ## Open the project home page in a browser
 	open $(LOCAL)
 
+clean.git: ## Force clean the git metadata
+	$(GIT) reflog expire --expire=now --all
+	$(GIT) gc --aggressive --prune=now --quiet
+
 ## -- Composer targets
 
-install: composer.lock ## Installs vendors from composer.lock
+composer.install: ## Installs vendors from composer.lock
 	$(COMPOSER) install
 
-update: ## Updates vendors
+composer.update: ## Updates vendors
 	$(COMPOSER) update
 
-composer.lock: update
-
-## -- Console targets
+## -- Cache targets
 
 cc: ## Clear the symfony cache
 	$(CONSOLE) cache:clear
@@ -57,34 +59,27 @@ cc: ## Clear the symfony cache
 cc.purge: ## Remove cache and log files
 	rm -rf var/cache/*/*
 	rm var/log/*
-	$(CONSOLE) cache:warmup
+
+## -- Assets etc.
 
 assets: ## Link assets into /public
 	$(CONSOLE) assets:install --symlink
 
-clean.git:
-	$(GIT) reflog expire --expire=now --all
-	$(GIT) gc --aggressive --prune=now --quiet
+yarn: ## Install yarn assets
+	$(YARN) install
 
-clean:
-	rm -rf var/cache/dev/* data/dev/*
-	rm -f var/log/dev-*.log
+yarn.upgrade:
+	$(YARN) upgrade
 
-reset: clean ## Drop the database and recreate it with fixtures
+## Database cleaning
+
+reset: cc.purge ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) doctrine:database:create --quiet
 	$(CONSOLE) doctrine:schema:create --quiet
 	$(CONSOLE) doctrine:schema:validate --quiet
 	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=test
-
-## -- Yarn assets
-
-yarn.lock: package.json
-	$(YARN) upgrade
-
-yarn: ## Install yarn assets
-	$(YARN) install
 
 ## -- Container debug targets
 
