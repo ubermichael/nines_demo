@@ -26,8 +26,9 @@ TWIGCS = ./vendor/bin/twigcs
 .SILENT:
 
 # Useful URLs
-LOCAL='http://localhost/nines_demo/public'
-SOLR='http://localhost:8983/solr/#/nines_demo/core-overview'
+PROJECT=nines_demo
+LOCAL=http://localhost/$(PROJECT)/public
+SOLR=http://localhost:8983/solr/\#/$(PROJECT)/core-overview
 
 ## -- Help
 help: ## Outputs this help screen
@@ -61,13 +62,15 @@ cc.purge: ## Remove cache and log files
 assets: ## Link assets into /public
 	$(CONSOLE) assets:install --symlink
 
-clean:
-	rm -rf var/cache/*/*
-	rm -f var/log/*
+clean.git:
 	$(GIT) reflog expire --expire=now --all
 	$(GIT) gc --aggressive --prune=now --quiet
 
-reset: ## Drop the database and recreate it with fixtures
+clean:
+	rm -rf var/cache/dev/* data/dev/*
+	rm -f var/log/dev-*.log
+
+reset: clean ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) doctrine:database:create --quiet
@@ -85,27 +88,31 @@ yarn: ## Install yarn assets
 
 ## -- Container debug targets
 
-dump-params: ## List all of the nines container parameters
+dump.params: ## List all of the nines container parameters
 	$(CONSOLE) debug:container --parameters | grep '^\s*nines'
 
-dump-env: ## Show all environment variables in the container
+dump.env: ## Show all environment variables in the container
 	$(CONSOLE) debug:container --env-vars
 
-dump-autowire: ## Show autowireable services
+dump.autowire: ## Show autowireable services
 	$(CONSOLE) debug:autowiring nines --all
 
 ## -- Useful development services
 
-mailhog-start: ## Start the email catcher
+mailhog.start: ## Start the email catcher
 	$(BREW) services start mailhog
 	open http://localhost:8025
 
-mailhog-stop: ## Stop the email catcher
+mailhog.stop: ## Stop the email catcher
 	$(BREW) services stop mailhog
 
 ## -- Test targets
 
-test.db: ## Create a test database and load the fixtures in it
+test.clean: ## Clean up any test files
+	rm -rf var/cache/test/* data/test/*
+	rm -f var/log/test-*.log
+
+test.reset: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) --env=test doctrine:database:create --quiet
@@ -113,18 +120,12 @@ test.db: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:schema:validate --quiet
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=test
 
-test.clean: ## Clean up any test files
-	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
-	$(CONSOLE) --env=test cache:clear --quiet
-	$(CONSOLE) --env=test cache:warmup --quiet
-	rm -rf data/test
-
 test.run:
 	$(PHPUNIT) $(path)
 
-test: test.clean test.db test.run ## Run all tests. Use optional path=/path/to/tests to limit target
+test: test.clean test.reset test.run ## Run all tests. Use optional path=/path/to/tests to limit target
 
-test.cover: test.clean test.db ## Generate a test cover report
+test.cover: test.clean test.reset ## Generate a test cover report
 	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
 	open $(LOCAL)/dev/coverage/index.html
 
@@ -139,7 +140,20 @@ solr.clean:
 
 solr.index:
 
-## -- Coding standards targets
+## -- Coding standards fixing
+
+fix: ## Fix the code with the CS rules
+	$(PHPCSF) fix $(path)
+
+fix.cc: ## Remove the PHP CS Cache file
+	rm -f var/cache/php_cs.cache
+
+fix.all: fix.cc fix ## Ignore the CS cache and fix the code with the CS rules
+
+fix.list: ## Check the code against the CS rules
+	$(PHPCSF) fix --dry-run -v $(path)
+
+## -- Coding standards checking
 
 lint-all: stan.cc stan lint twiglint twigcs yamllint
 
@@ -147,27 +161,6 @@ symlint: yamllint twiglint ## Run the symfony linting checks
 	$(SYMFONY) security:check --quiet
 	$(CONSOLE) lint:container --quiet
 	$(CONSOLE) doctrine:schema:validate --quiet --skip-sync -vvv --no-interaction
-
-stan: ## Run static analysis
-	$(PHPSTAN) --memory-limit=1G analyze $(path)
-
-stan.cc: ## Clear the static analysis cache
-	$(PHPSTAN) clear-result-cache
-
-stan.baseline: ## Generate a new phpstan baseline file
-	$(PHPSTAN) analyze --generate-baseline $(path)
-
-lint: ## Check the code against the CS rules
-	$(PHPCSF) fix --dry-run -v $(path)
-
-fix: ## Fix the code with the CS rules
-	$(PHPCSF) fix $(path)
-
-fix.all: ## Ignore the CS cache and fix the code with the CS rules
-	$(PHPCSF) fix --using-cache=no $(path)
-
-fix.cc: ## Remove the PHP CS Cache file
-	rm -f var/cache/php_cs.cache
 
 twiglint: ## Check the twig templates for syntax errors
 	$(CONSOLE) lint:twig templates lib/Nines
@@ -177,3 +170,12 @@ twigcs: ## Check the twig templates against the coding standards
 
 yamllint:
 	$(CONSOLE) lint:yaml templates lib/Nines
+
+stan: ## Run static analysis
+	$(PHPSTAN) --memory-limit=1G analyze $(path)
+
+stan.cc: ## Clear the static analysis cache
+	$(PHPSTAN) clear-result-cache
+
+stan.baseline: ## Generate a new phpstan baseline file
+	$(PHPSTAN) analyze --generate-baseline $(path)
