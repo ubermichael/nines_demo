@@ -117,8 +117,7 @@ test.clean: ## Clean up any test files
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test cache:clear --quiet
 	$(CONSOLE) --env=test cache:warmup --quiet
-	post -c nines_solr_test -type text/xml -d $'<delete><query>*:*</query></delete>' > /dev/null
-
+	rm -rf data/test
 
 test.run:
 	$(PHPUNIT) $(path)
@@ -128,6 +127,17 @@ test: test.clean test.db test.run ## Run all tests. Use optional path=/path/to/t
 test.cover: test.clean test.db ## Generate a test cover report
 	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
 	open $(LOCAL)/dev/coverage/index.html
+
+## -- Solr search and indexing targets
+solr.setup:
+	-solr create -c nines_demo
+	-solr create -c nines_demo_test
+
+solr.clean:
+	-solr delete -c nines_demo
+	-solr delete -c nines_demo_test
+
+solr.index:
 
 ## -- Coding standards targets
 
@@ -139,7 +149,7 @@ symlint: yamllint twiglint ## Run the symfony linting checks
 	$(CONSOLE) doctrine:schema:validate --quiet --skip-sync -vvv --no-interaction
 
 stan: ## Run static analysis
-	$(PHPSTAN) analyze $(path)
+	$(PHPSTAN) --memory-limit=1G analyze $(path)
 
 stan.cc: ## Clear the static analysis cache
 	$(PHPSTAN) clear-result-cache

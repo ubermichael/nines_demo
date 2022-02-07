@@ -19,8 +19,6 @@ class PoemTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
-    private const TYPEAHEAD_QUERY = 'poem';
-
     public function testAnonIndex() : void {
         $crawler = $this->client->request('GET', '/poem/');
         $this->assertResponseStatusCodeSame(self::ANON_RESPONSE_CODE);

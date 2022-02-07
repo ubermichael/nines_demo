@@ -41,6 +41,8 @@
       <directory>lib/Nines/*/DataFixtures</directory>
       <directory>lib/Nines/*/DependencyInjection</directory>
       <directory>lib/Nines/*/Tests</directory>
+      <directory>lib/Nines/SolrBundle/TestUtil</directory>
+      <directory>lib/Nines/UtilBundle/TestCase</directory>
     </exclude>
     <report>
       <html outputDirectory="public/dev/coverage"/>
