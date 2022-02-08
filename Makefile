@@ -4,6 +4,7 @@ PFX=`brew --prefix`
 COMPOSER = $(PFX)/bin/composer
 SYMFONY = $(PFX)/bin/symfony
 YARN = $(PFX)/bin/yarn
+SASS = $(PFX)/bin/sass
 PHP = $(PFX)/bin/php
 BREW = $(PFX)/bin/brew
 GIT = $(PFX)/bin/git
@@ -71,9 +72,15 @@ yarn: ## Install yarn assets
 yarn.upgrade:
 	$(YARN) upgrade
 
+sass:
+	$(SASS) public/scss:public/css
+
+sass.watch:
+
 ## Database cleaning
 
 reset: cc.purge ## Drop the database and recreate it with fixtures
+	$(CONSOLE) nines:solr:clear
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) doctrine:database:create --quiet
@@ -108,6 +115,7 @@ test.clean: ## Clean up any test files
 	rm -f var/log/test-*.log
 
 test.reset: ## Create a test database and load the fixtures in it
+	$(CONSOLE) --env=test nines:solr:clear
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
 	$(CONSOLE) --env=test doctrine:database:create --quiet
@@ -129,11 +137,15 @@ solr.setup:
 	-solr create -c nines_demo
 	-solr create -c nines_demo_test
 
-solr.clean:
+solr.delete:
 	-solr delete -c nines_demo
 	-solr delete -c nines_demo_test
 
+solr.clear:
+	$(CONSOLE) nines:solr:clear
+
 solr.index:
+	$(CONSOLE) nines:solr:index --clear
 
 solr.open:
 	open $(SOLR)
