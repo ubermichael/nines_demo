@@ -1,3 +1,4 @@
 [submodule "lib/Nines"]
 	path = lib/Nines
-	url = /Users/michael/Documents/php/nines-bundles
+	url = git@github.com:ubermichael/nines-bundles.git
+	branch = 4.x-up
