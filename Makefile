@@ -89,7 +89,7 @@ reset: cc.purge ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:database:create --quiet
 	$(CONSOLE) doctrine:schema:create --quiet
 	$(CONSOLE) doctrine:schema:validate --quiet
-	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=test
+	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev
 
 ## -- Container debug targets
 
