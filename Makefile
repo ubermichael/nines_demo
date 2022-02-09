@@ -51,6 +51,9 @@ composer.install: ## Installs vendors from composer.lock
 composer.update: ## Updates vendors
 	$(COMPOSER) update
 
+composer.autoload: ## Update autoloading metadata
+	$(COMPOSER) dump-autoload
+
 ## -- Cache targets
 
 cc: ## Clear the symfony cache
@@ -59,7 +62,7 @@ cc: ## Clear the symfony cache
 
 cc.purge: ## Remove cache and log files
 	rm -rf var/cache/*/*
-	rm var/log/*
+	rm -f var/log/*
 
 ## -- Assets etc.
 
@@ -98,6 +101,9 @@ dump.env: ## Show all environment variables in the container
 
 dump.autowire: ## Show autowireable services
 	$(CONSOLE) debug:autowiring nines --all
+
+dump.twig: ## Show all twig configuration
+	$(CONSOLE) debug:twig
 
 ## -- Useful development services
 
