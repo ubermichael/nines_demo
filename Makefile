@@ -24,7 +24,7 @@ TWIGCS = ./vendor/bin/twigcs
 .PHONY:
 
 # Silence output slightly
-.SILENT:
+# .SILENT:
 
 # Useful URLs
 PROJECT=nines_demo
@@ -85,11 +85,7 @@ sass.watch:
 reset: cc.purge ## Drop the database and recreate it with fixtures
 	$(CONSOLE) nines:solr:clear
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
-	$(CONSOLE) doctrine:database:drop --if-exists --force --quiet
-	$(CONSOLE) doctrine:database:create --quiet
-	$(CONSOLE) doctrine:schema:create --quiet
-	$(CONSOLE) doctrine:schema:validate --quiet
-	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev
+	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 
 ## -- Container debug targets
 
@@ -123,11 +119,7 @@ test.clean: ## Clean up any test files
 test.reset: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test nines:solr:clear
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
-	$(CONSOLE) --env=test doctrine:database:drop --if-exists --force --quiet
-	$(CONSOLE) --env=test doctrine:database:create --quiet
-	$(CONSOLE) --env=test doctrine:schema:create --quiet
-	$(CONSOLE) --env=test doctrine:schema:validate --quiet
-	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=test
+	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 
 test.run:
 	$(PHPUNIT) $(path)
