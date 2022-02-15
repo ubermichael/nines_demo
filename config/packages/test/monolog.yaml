@@ -6,3 +6,4 @@ monolog:
             level: warning
             channels: ["!event", "!doctrine", "!console", "!translation"]
             max_files: 1
+            formatter: nines.formatter.request
