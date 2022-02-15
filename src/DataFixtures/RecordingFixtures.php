@@ -30,7 +30,7 @@ class RecordingFixtures extends Fixture implements FixtureGroupInterface {
     private AudioManager $manager;
 
     public static function getGroups() : array {
-        return ['test'];
+        return ['test', 'dev'];
     }
 
     /**

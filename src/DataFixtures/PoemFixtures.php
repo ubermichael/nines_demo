@@ -21,7 +21,7 @@ use Nines\DublinCoreBundle\Entity\Value;
 
 class PoemFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface {
     public static function getGroups() : array {
-        return ['test'];
+        return ['test', 'dev'];
     }
 
     /**

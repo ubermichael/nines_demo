@@ -31,7 +31,7 @@ class DocumentFixtures extends Fixture implements FixtureGroupInterface {
     private PdfManager $manager;
 
     public static function getGroups() : array {
-        return ['test'];
+        return ['test', 'dev'];
     }
 
     /**

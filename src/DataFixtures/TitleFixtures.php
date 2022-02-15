@@ -17,7 +17,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class TitleFixtures extends Fixture implements FixtureGroupInterface {
     public static function getGroups() : array {
-        return ['test'];
+        return ['test', 'dev'];
     }
 
     /**

@@ -19,7 +19,7 @@ use Nines\MediaBundle\Entity\Link;
 
 class BookmarkFixtures extends Fixture implements FixtureGroupInterface {
     public static function getGroups() : array {
-        return ['test'];
+        return ['test', 'dev'];
     }
 
     /**

@@ -119,7 +119,7 @@ test.clean: ## Clean up any test files
 test.reset: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test nines:solr:clear
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
-	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
+	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 
 test.run:
 	$(PHPUNIT) $(path)
