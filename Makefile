@@ -27,9 +27,13 @@ TWIGCS := ./vendor/bin/twigcs
 # .SILENT:
 
 # Useful URLs
-PROJECT=nines_demo
-LOCAL=http://localhost/$(PROJECT)/public
-SOLR=http://localhost:8983/solr/\#/$(PROJECT)/core-overview
+PROJECT := nines_demo
+PROJECT_TEST := nines_demo_test
+
+LOCAL := http://localhost/$(PROJECT)/public
+
+SOLR := http://localhost:8983/solr/\#/$(PROJECT)/core-overview
+SOLR_TEST := http://localhost:8983/solr/\#/$(PROJECT_TEST)/core-overview
 
 ## -- Help
 help: ## Outputs this help screen
@@ -88,8 +92,7 @@ db: ## Create the database if it does not already exist
 	$(CONSOLE) doctrine:schema:create --quiet
 	$(CONSOLE) doctrine:schema:validate --quiet
 
-reset: cc.purge ## Drop the database and recreate it with fixtures
-	$(CONSOLE) nines:solr:clear
+reset: cc.purge solr.clear ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 
@@ -107,6 +110,23 @@ dump.autowire: ## Show autowireable services
 dump.twig: ## Show all twig configuration
 	$(CONSOLE) debug:twig
 
+## -- Solr search and indexing targets
+
+solr.setup: ## Create the SOLR core for indexing
+	-solr create -c nines_demo
+
+solr.delete: ## Remove the SOLR core
+	-solr delete -c nines_demo
+
+solr.clear: ## Clear the content from the SOLR core
+	$(CONSOLE) nines:solr:clear
+
+solr.index: ## Index the content in to the SOLR core
+	$(CONSOLE) nines:solr:index --clear
+
+solr.open: ## Open the local SOLR core in a web browser
+	open $(SOLR)
+
 ## -- Useful development services
 
 mailhog.start: ## Start the email catcher
@@ -118,18 +138,32 @@ mailhog.stop: ## Stop the email catcher
 
 ## -- Test targets
 
+test.solr.setup: ## Create a test SOLR core
+	-solr create -c $(PROJECT_TEST)
+
+test.solr.delete: ## Delete the stest SOLR core
+	-solr delete -c $(PROJECT_TEST)
+
+test.solr.clear: ## Clear the content from the test SOLR core
+	$(CONSOLE) --env=test nines:solr:clear
+
+test.solr.index: ## Index the content into the test SOLR core
+	$(CONSOLE) --env=test nines:solr:index --clear
+
+test.solr.open: ## Open the test SOLR core in a web browser
+	open $(SOLR)
+
 test.clean: ## Clean up any test files
 	rm -rf var/cache/test/* data/test/*
 	rm -f var/log/test-*.log
 
-db: ## Create the test database if it does not already exist
+test.db: ## Create the test database if it does not already exist
 	$(CONSOLE) --env=test doctrine:database:create --if-not-exists --quiet
 	$(CONSOLE) --env=test doctrine:schema:drop --force --quiet
 	$(CONSOLE) --env=test doctrine:schema:create --quiet
 	$(CONSOLE) --env=test doctrine:schema:validate --quiet
 
-test.reset: ## Create a test database and load the fixtures in it
-	$(CONSOLE) --env=test nines:solr:clear
+test.reset: test.solr.clear ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 
@@ -141,24 +175,6 @@ test: test.clean test.reset test.run ## Run all tests. Use optional path=/path/t
 test.cover: test.clean test.reset ## Generate a test cover report
 	$(PHP) -d zend_extension=xdebug.so -d xdebug.mode=coverage $(PHPUNIT) -c phpunit.coverage.xml $(path)
 	open $(LOCAL)/dev/coverage/index.html
-
-## -- Solr search and indexing targets
-solr.setup:
-	-solr create -c nines_demo
-	-solr create -c nines_demo_test
-
-solr.delete:
-	-solr delete -c nines_demo
-	-solr delete -c nines_demo_test
-
-solr.clear:
-	$(CONSOLE) nines:solr:clear
-
-solr.index:
-	$(CONSOLE) nines:solr:index --clear
-
-solr.open:
-	open $(SOLR)
 
 ## -- Coding standards fixing
 
