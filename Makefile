@@ -1,23 +1,23 @@
-PFX=`brew --prefix`
+PFX := $(shell brew --prefix)
 
 # Executables
-COMPOSER = $(PFX)/bin/composer
-SYMFONY = $(PFX)/bin/symfony
-YARN = $(PFX)/bin/yarn
-SASS = $(PFX)/bin/sass
-PHP = $(PFX)/bin/php
-BREW = $(PFX)/bin/brew
-GIT = $(PFX)/bin/git
-SOLR = $(PFX)/bin/solr
+COMPOSER := $(PFX)/bin/composer
+SYMFONY := $(PFX)/bin/symfony
+YARN := $(PFX)/bin/yarn
+SASS := $(PFX)/bin/sass
+PHP := $(PFX)/bin/php
+BREW := $(PFX)/bin/brew
+GIT := $(PFX)/bin/git
+SOLR := $(PFX)/bin/solr
 
 # Aliases
-CONSOLE = $(PHP) bin/console
+CONSOLE := $(PHP) bin/console
 
 # Vendor executables
-PHPUNIT = ./vendor/bin/phpunit
-PHPSTAN = ./vendor/bin/phpstan
-PHPCSF = ./vendor/bin/php-cs-fixer
-TWIGCS = ./vendor/bin/twigcs
+PHPUNIT := ./vendor/bin/phpunit
+PHPSTAN := ./vendor/bin/phpstan
+PHPCSF := ./vendor/bin/php-cs-fixer
+TWIGCS := ./vendor/bin/twigcs
 
 # Misc Makefile stuff
 .DEFAULT_GOAL = help
@@ -82,6 +82,12 @@ sass.watch:
 
 ## Database cleaning
 
+db: ## Create the database if it does not already exist
+	$(CONSOLE) doctrine:database:create --if-not-exists --quiet
+	$(CONSOLE) doctrine:schema:drop --force --quiet
+	$(CONSOLE) doctrine:schema:create --quiet
+	$(CONSOLE) doctrine:schema:validate --quiet
+
 reset: cc.purge ## Drop the database and recreate it with fixtures
 	$(CONSOLE) nines:solr:clear
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
@@ -115,6 +121,12 @@ mailhog.stop: ## Stop the email catcher
 test.clean: ## Clean up any test files
 	rm -rf var/cache/test/* data/test/*
 	rm -f var/log/test-*.log
+
+db: ## Create the test database if it does not already exist
+	$(CONSOLE) --env=test doctrine:database:create --if-not-exists --quiet
+	$(CONSOLE) --env=test doctrine:schema:drop --force --quiet
+	$(CONSOLE) --env=test doctrine:schema:create --quiet
+	$(CONSOLE) --env=test doctrine:schema:validate --quiet
 
 test.reset: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test nines:solr:clear
