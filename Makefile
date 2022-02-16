@@ -9,6 +9,8 @@ PHP := $(PFX)/bin/php
 BREW := $(PFX)/bin/brew
 GIT := $(PFX)/bin/git
 SOLR := $(PFX)/bin/solr
+PV := $(PFX)/bin/pv
+MYSQL := $(PFX)/bin/mysql
 
 # Aliases
 CONSOLE := $(PHP) bin/console
@@ -26,12 +28,13 @@ TWIGCS := ./vendor/bin/twigcs
 # Silence output slightly
 # .SILENT:
 
-# Useful URLs
+DB := nines_demo
+DB_TEST := $(DB)_test
 PROJECT := nines_demo
-PROJECT_TEST := nines_demo_test
+PROJECT_TEST := $(PROJECT)_test
 
+# Useful URLs
 LOCAL := http://localhost/$(PROJECT)/public
-
 SOLR := http://localhost:8983/solr/\#/$(PROJECT)/core-overview
 SOLR_TEST := http://localhost:8983/solr/\#/$(PROJECT_TEST)/core-overview
 
@@ -46,6 +49,10 @@ open: ## Open the project home page in a browser
 clean.git: ## Force clean the git metadata
 	$(GIT) reflog expire --expire=now --all
 	$(GIT) gc --aggressive --prune=now --quiet
+
+clean: ## Clean up any dev files
+	rm -rf var/cache/dev/* data/dev/*
+	rm -f var/log/dev-*.log
 
 ## -- Composer targets
 
@@ -76,25 +83,32 @@ assets: ## Link assets into /public
 yarn: ## Install yarn assets
 	$(YARN) install
 
-yarn.upgrade:
+yarn.upgrade: ## Upgrade the yarn assets
 	$(YARN) upgrade
 
-sass:
+sass: ## Recompile the SASS assets
 	$(SASS) public/scss:public/css
 
-sass.watch:
+sass.watch: ## Start the SASS watcher
+	$(SASS) --watch public/scss:public/css
 
 ## Database cleaning
 
 db: ## Create the database if it does not already exist
-	$(CONSOLE) doctrine:database:create --if-not-exists --quiet
-	$(CONSOLE) doctrine:schema:drop --force --quiet
-	$(CONSOLE) doctrine:schema:create --quiet
-	$(CONSOLE) doctrine:schema:validate --quiet
+	$(CONSOLE) --env=dev doctrine:database:create --if-not-exists --quiet
+	$(CONSOLE) --env=dev doctrine:schema:drop --force --quiet
+	$(CONSOLE) --env=dev doctrine:schema:create --quiet
+	$(CONSOLE) --env=dev doctrine:schema:validate --quiet
 
-reset: cc.purge solr.clear ## Drop the database and recreate it with fixtures
+reset: cc.purge ## Drop the database and recreate it with fixtures
 	$(CONSOLE) doctrine:cache:clear-metadata --quiet
-	$(CONSOLE) doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
+	$(CONSOLE) --env=dev doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
+
+reload: cc.purge
+	$(CONSOLE) --env=dev doctrine:database:drop --if-exists --force --quiet
+	$(CONSOLE) --env=dev doctrine:database:create --quiet
+	$(PV) $(PROJECT)-schema.sql | $(MYSQL) $(DB)
+	$(PV) $(PROJECT)-data.sql | $(MYSQL) $(DB)
 
 ## -- Container debug targets
 
@@ -163,7 +177,7 @@ test.db: ## Create the test database if it does not already exist
 	$(CONSOLE) --env=test doctrine:schema:create --quiet
 	$(CONSOLE) --env=test doctrine:schema:validate --quiet
 
-test.reset: test.solr.clear ## Create a test database and load the fixtures in it
+test.reset: ## Create a test database and load the fixtures in it
 	$(CONSOLE) --env=test doctrine:cache:clear-metadata --quiet
 	$(CONSOLE) --env=test doctrine:fixtures:load --quiet --no-interaction --group=dev --purger=fk_purger
 

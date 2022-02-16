@@ -2,3 +2,7 @@
 	path = lib/Nines
 	url = git@github.com:ubermichael/nines-bundles.git
 	branch = 4.x-up
+[submodule "deployment"]
+	path = deployment
+	url = git@github.com:ubermichael/deployment.git
+	branch = main
