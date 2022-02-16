@@ -6,3 +6,7 @@
 	path = deployment
 	url = git@github.com:ubermichael/deployment.git
 	branch = main
+[submodule "etc"]
+	path = etc
+	url = git@github.com:ubermichael/symake
+	branch = main
