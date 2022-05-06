@@ -1,0 +1,117 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$entity of method Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\:\\:setEntity\\(\\) expects Nines\\\\UtilBundle\\\\Entity\\\\AbstractEntityInterface\\|string, \\$this\\(class@anonymous/lib/Nines/DublinCoreBundle/Tests/Entity/ValueTraitTest\\.php\\:45\\) given\\.$#"
+			count: 1
+			path: lib/Nines/DublinCoreBundle/Tests/Entity/ValueTraitTest.php
+
+		-
+			message: "#^Property class@anonymous/lib/Nines/DublinCoreBundle/Tests/Entity/ValueTraitTest\\.php\\:45\\:\\:\\$values \\(Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>&iterable\\<Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>\\) does not accept non\\-empty\\-array\\<Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>\\|Doctrine\\\\Common\\\\Collections\\\\Collection\\<int, Nines\\\\DublinCoreBundle\\\\Entity\\\\Value\\>\\.$#"
+			count: 1
+			path: lib/Nines/DublinCoreBundle/Tests/Entity/ValueTraitTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\)$#"
+			count: 1
+			path: lib/Nines/FeedbackBundle/Controller/CommentController.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: lib/Nines/FeedbackBundle/Tests/Controller/CommentTest.php
+
+		-
+			message: "#^Access to property \\$associationMappings on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 2
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
+			message: "#^Access to property \\$fieldMappings on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 1
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
+			message: "#^Access to property \\$table on an unknown class Doctrine\\\\Common\\\\Persistence\\\\Mapping\\\\ClassMetadata\\.$#"
+			count: 1
+			path: lib/Nines/MakerBundle/Maker/AbstractNinesMaker.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:find\\(\\)$#"
+			count: 1
+			path: lib/Nines/SolrBundle/Command/DumpCommand.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:find\\(\\)$#"
+			count: 1
+			path: lib/Nines/SolrBundle/Hydrator/DoctrineHydrator.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method static method Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:\\:getClass\\(\\)$#"
+			count: 2
+			path: lib/Nines/SolrBundle/Mapper/EntityMapper.php
+
+		-
+			message: "#^Call to an undefined method Solarium\\\\Component\\\\Facet\\\\AbstractRange\\:\\:setMinCount\\(\\)\\.$#"
+			count: 1
+			path: lib/Nines/SolrBundle/Query/QueryBuilder.php
+
+		-
+			message: "#^Call to an undefined method Solarium\\\\Component\\\\Facet\\\\FacetInterface\\:\\:setField\\(\\)\\.$#"
+			count: 1
+			path: lib/Nines/SolrBundle/Query/QueryBuilder.php
+
+		-
+			message: "#^Method Solarium\\\\QueryType\\\\Select\\\\Query\\\\FilterQuery\\:\\:setQuery\\(\\) invoked with 0 parameters, 1\\-2 required\\.$#"
+			count: 1
+			path: lib/Nines/SolrBundle/Query/QueryBuilder.php
+
+		-
+			message: "#^Call to an undefined method Solarium\\\\Core\\\\Query\\\\AbstractQuery\\:\\:getFilterQueries\\(\\)\\.$#"
+			count: 2
+			path: lib/Nines/SolrBundle/Query/Result.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Mime\\\\RawMessage\\:\\:getBody\\(\\)\\.$#"
+			count: 1
+			path: lib/Nines/UserBundle/Tests/Controller/SecurityControllerTest.php
+
+		-
+			message: "#^Unable to resolve the template type T in call to method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\)$#"
+			count: 1
+			path: lib/Nines/UtilBundle/Services/EntityLinker.php
+
+		-
+			message: "#^Method class@anonymous/lib/Nines/UtilBundle/Tests/Entity/ContributorTraitTest\\.php\\:72\\:\\:getContributions\\(\\) should return array\\<string, string\\>\\|null but returns array\\<int, array\\<string, string\\>\\>\\.$#"
+			count: 1
+			path: lib/Nines/UtilBundle/Tests/Entity/ContributorTraitTest.php
+
+		-
+			message: "#^Property class@anonymous/lib/Nines/UtilBundle/Tests/Entity/ContributorTraitTest\\.php\\:72\\:\\:\\$contributions \\(array\\<int, array\\<string, string\\>\\>\\|null\\) does not accept array\\<string, string\\>\\.$#"
+			count: 1
+			path: lib/Nines/UtilBundle/Tests/Entity/ContributorTraitTest.php
+
+		-
+			message: "#^Method class@anonymous/lib/Nines/UtilBundle/Tests/Services/ContributionManagerTest\\.php\\:32\\:\\:getContributions\\(\\) should return array\\<string, string\\>\\|null but returns array\\<int, array\\<string, string\\>\\>\\.$#"
+			count: 1
+			path: lib/Nines/UtilBundle/Tests/Services/ContributionManagerTest.php
+
+		-
+			message: "#^Property class@anonymous/lib/Nines/UtilBundle/Tests/Services/ContributionManagerTest\\.php\\:32\\:\\:\\$contributions \\(array\\<int, array\\<string, string\\>\\>\\|null\\) does not accept array\\<string, string\\>\\.$#"
+			count: 1
+			path: lib/Nines/UtilBundle/Tests/Services/ContributionManagerTest.php
+
+		-
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 4
+			path: tests/Controller/ArtefactTest.php
+
+		-
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 4
+			path: tests/Controller/DocumentTest.php
+
+		-
+			message: "#^Cannot call method upload\\(\\) on array\\<array\\<Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\>\\|Symfony\\\\Component\\\\DomCrawler\\\\Field\\\\FormField\\.$#"
+			count: 4
+			path: tests/Controller/RecordingTest.php
+

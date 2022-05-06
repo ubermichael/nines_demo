@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class ArtefactRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'title';
 
-    private ArtefactRepository $repo;
+    private ?ArtefactRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(ArtefactRepository::class, $this->repo);

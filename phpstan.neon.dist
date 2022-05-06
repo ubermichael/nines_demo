@@ -19,5 +19,35 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingCallableSignature: true
-#     dynamicConstantNames:
-#         - App\Tests\Controller\CategoryTest::ANON_RESPONSE_CODE
+    dynamicConstantNames:
+        - App\Tests\Controller\ArtefactTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\BookmarkTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\DocumentTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\PoemTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\RecordingTest::ANON_RESPONSE_CODE
+        - App\Tests\Controller\TitleTest::ANON_RESPONSE_CODE
+
+        - Nines\BlogBundle\Tests\Controller\PageTest::ANON_RESPONSE_CODE
+        - Nines\BlogBundle\Tests\Controller\PostCategoryTest::ANON_RESPONSE_CODE
+        - Nines\BlogBundle\Tests\Controller\PostStatusTest::ANON_RESPONSE_CODE
+        - Nines\BlogBundle\Tests\Controller\PostTest::ANON_RESPONSE_CODE
+
+        - Nines\DublinCoreBundle\Tests\Controller\ElementTest::ANON_RESPONSE_CODE
+        - Nines\DublinCoreBundle\Tests\Controller\ValueTest::ANON_RESPONSE_CODE
+
+        - Nines\EditorBundle\Tests\Controller\EditorControllerTest::ANON_RESPONSE_CODE
+
+        - Nines\FeedbackBundle\Tests\Controller\CommentNoteTest::ANON_RESPONSE_CODE
+        - Nines\FeedbackBundle\Tests\Controller\CommentStatusTest::ANON_RESPONSE_CODE
+        - Nines\FeedbackBundle\Tests\Controller\CommentTest::ANON_RESPONSE_CODE
+
+        - Nines\MediaBundle\Tests\Controller\AudioTest::ANON_RESPONSE_CODE
+        - Nines\MediaBundle\Tests\Controller\ImageTest::ANON_RESPONSE_CODE
+        - Nines\MediaBundle\Tests\Controller\LinkTest::ANON_RESPONSE_CODE
+        - Nines\MediaBundle\Tests\Controller\PdfTest::ANON_RESPONSE_CODE
+
+        - Nines\UserBundle\Tests\Controller\AdminControllerTest::ANON_RESPONSE_CODE
+        - Nines\UserBundle\Tests\Controller\ProfileControllerTest::ANON_RESPONSE_CODE
+        - Nines\UserBundle\Tests\Controller\SecurityControllerTest::ANON_RESPONSE_CODE
+
+        - Nines\UtilBundle\Tests\Controller\ErrorControllerTest::ANON_RESPONSE_CODE

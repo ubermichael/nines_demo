@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class BookmarkRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'title';
 
-    private BookmarkRepository $repo;
+    private ?BookmarkRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(BookmarkRepository::class, $this->repo);

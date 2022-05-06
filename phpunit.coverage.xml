@@ -41,6 +41,7 @@
   <testsuites>
     <testsuite name="Project Test Suite">
       <directory>tests</directory>
+      <directory>lib/Nines/*/Tests</directory>
     </testsuite>
   </testsuites>
 

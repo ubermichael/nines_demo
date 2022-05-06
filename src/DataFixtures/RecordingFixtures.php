@@ -27,7 +27,7 @@ class RecordingFixtures extends Fixture implements FixtureGroupInterface {
         '94934__bletort__taegum-1.mp3',
     ];
 
-    private AudioManager $manager;
+    private ?AudioManager $manager = null;
 
     public static function getGroups() : array {
         return ['test', 'dev'];

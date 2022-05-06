@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class DocumentRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'title';
 
-    private DocumentRepository $repo;
+    private ?DocumentRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(DocumentRepository::class, $this->repo);

@@ -28,7 +28,7 @@ class DocumentFixtures extends Fixture implements FixtureGroupInterface {
         'holmes_5.pdf',
     ];
 
-    private PdfManager $manager;
+    private ?PdfManager $manager = null;
 
     public static function getGroups() : array {
         return ['test', 'dev'];

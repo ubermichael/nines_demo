@@ -28,7 +28,7 @@ class ArtefactFixtures extends Fixture implements FixtureGroupInterface {
         '49654941212_6e3bb28a75_c.jpg',
     ];
 
-    private ImageManager $manager;
+    private ?ImageManager $manager = null;
 
     public static function getGroups() : array {
         return ['test', 'dev'];

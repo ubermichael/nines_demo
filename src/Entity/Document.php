@@ -35,7 +35,7 @@ class Document extends AbstractEntity implements PdfContainerInterface {
     /**
      * @ORM\Column(type="text")
      */
-    private ?string $description;
+    private ?string $description = null;
 
     public function __construct() {
         parent::__construct();

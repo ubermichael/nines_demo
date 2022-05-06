@@ -16,7 +16,7 @@ use Nines\UtilBundle\TestCase\ServiceTestCase;
 class RecordingRepositoryTest extends ServiceTestCase {
     private const TYPEAHEAD_QUERY = 'title';
 
-    private RecordingRepository $repo;
+    private ?RecordingRepository $repo = null;
 
     public function testSetUp() : void {
         $this->assertInstanceOf(RecordingRepository::class, $this->repo);
