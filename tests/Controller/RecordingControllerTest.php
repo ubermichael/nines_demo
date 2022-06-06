@@ -17,7 +17,7 @@ use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class RecordingTest extends ControllerTestCase {
+class RecordingControllerTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 

@@ -15,7 +15,7 @@ use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class TitleTest extends ControllerTestCase {
+class TitleControllerTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 

@@ -15,7 +15,7 @@ use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\TestCase\ControllerTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class BookmarkTest extends ControllerTestCase {
+class BookmarkControllerTest extends ControllerTestCase {
     // Change this to HTTP_OK when the site is public.
     private const ANON_RESPONSE_CODE = Response::HTTP_FOUND;
 
@@ -107,7 +107,7 @@ class BookmarkTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testUserSearch() : void {
@@ -120,7 +120,7 @@ class BookmarkTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAdminSearch() : void {
@@ -133,7 +133,7 @@ class BookmarkTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAnonEdit() : void {
@@ -144,7 +144,7 @@ class BookmarkTest extends ControllerTestCase {
     public function testUserEdit() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/bookmark/1/edit');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAdminEdit() : void {
@@ -179,13 +179,13 @@ class BookmarkTest extends ControllerTestCase {
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/bookmark/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testUserNewPopup() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/bookmark/new_popup');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAdminNew() : void {
