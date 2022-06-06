@@ -109,7 +109,7 @@ class ArtefactControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testUserSearch() : void {
@@ -122,7 +122,7 @@ class ArtefactControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAdminSearch() : void {
@@ -135,7 +135,7 @@ class ArtefactControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAnonEdit() : void {
@@ -146,7 +146,7 @@ class ArtefactControllerTest extends ControllerTestCase {
     public function testUserEdit() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/artefact/1/edit');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAdminEdit() : void {
@@ -178,13 +178,13 @@ class ArtefactControllerTest extends ControllerTestCase {
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/artefact/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testUserNewPopup() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/artefact/new_popup');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAdminNew() : void {
@@ -225,7 +225,7 @@ class ArtefactControllerTest extends ControllerTestCase {
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/artefact/5');
+        $crawler = $this->client->request('GET', '/artefact/1');
         $this->assertResponseIsSuccessful();
         $form = $crawler->selectButton('Delete')->form();
         $this->client->submit($form);

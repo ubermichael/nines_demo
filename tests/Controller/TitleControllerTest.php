@@ -107,7 +107,7 @@ class TitleControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testUserSearch() : void {
@@ -120,7 +120,7 @@ class TitleControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAdminSearch() : void {
@@ -133,7 +133,7 @@ class TitleControllerTest extends ControllerTestCase {
         ]);
 
         $responseCrawler = $this->client->submit($form);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAnonEdit() : void {
