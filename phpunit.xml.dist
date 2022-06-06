@@ -33,5 +33,7 @@
 
     <extensions>
         <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+        <!-- Enable this extension to see tests that take longer than two seconds -->
+        <!-- <extension class="Nines\UtilBundle\TestExtension\Timer"/>-->
     </extensions>
 </phpunit>
