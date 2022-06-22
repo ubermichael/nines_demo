@@ -285,7 +285,7 @@ class RecordingControllerTest extends ControllerTestCase {
 
     public function testAdminEditAudio() : void {
         $this->login(UserFixtures::ADMIN);
-        $crawler = $this->client->request('GET', '/recording/1/edit_audio/1');
+        $crawler = $this->client->request('GET', '/recording/1/edit_audio/6');
         $this->assertResponseIsSuccessful();
 
         $manager = self::$container->get(AudioManager::class);
@@ -306,13 +306,13 @@ class RecordingControllerTest extends ControllerTestCase {
     }
 
     public function testAnonDeleteAudio() : void {
-        $crawler = $this->client->request('DELETE', '/recording/1/delete_audio/1');
+        $crawler = $this->client->request('DELETE', '/recording/1/delete_audio/6');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
     public function testUserDeleteAudio() : void {
         $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('DELETE', '/recording/1/delete_audio/1');
+        $crawler = $this->client->request('DELETE', '/recording/1/delete_audio/6');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -324,7 +324,7 @@ class RecordingControllerTest extends ControllerTestCase {
         $crawler = $this->client->request('GET', '/recording/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/recording/4/delete_audio/4"]')->form();
+        $form = $crawler->filter('form.delete-form[action="/recording/4/delete_audio/9"]')->form();
         $this->client->submit($form);
         $this->assertResponseRedirects('/recording/4');
         $responseCrawler = $this->client->followRedirect();
@@ -343,8 +343,8 @@ class RecordingControllerTest extends ControllerTestCase {
         $crawler = $this->client->request('GET', '/recording/4');
         $this->assertResponseIsSuccessful();
 
-        $form = $crawler->filter('form.delete-form[action="/recording/4/delete_audio/4"]')->form();
-        $form->getNode()->setAttribute('action', '/recording/3/delete_audio/4');
+        $form = $crawler->filter('form.delete-form[action="/recording/4/delete_audio/9"]')->form();
+        $form->getNode()->setAttribute('action', '/recording/3/delete_audio/9');
 
         $this->client->submit($form);
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
