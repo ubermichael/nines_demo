@@ -305,6 +305,13 @@ class DocumentControllerTest extends ControllerTestCase {
         $manager->setCopy(false);
     }
 
+
+    public function testAdminEditWrongPdf() : void {
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/document/1/edit_pdf/2');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
     public function testAnonDeletePdf() : void {
         $crawler = $this->client->request('DELETE', '/document/1/delete_pdf/1');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
@@ -333,6 +340,27 @@ class DocumentControllerTest extends ControllerTestCase {
         $this->em->clear();
         $postCount = count($repo->findAll());
         $this->assertSame($preCount - 1, $postCount);
+    }
+
+    public function testAdminDeletePdfWrongCSRF() : void {
+        $repo = self::$container->get(PdfRepository::class);
+        $preCount = count($repo->findAll());
+
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/document/4');
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form.delete-form[action="/document/4/delete_pdf/4"]')->form();
+        $form['_token'] = 'abc1234';
+        $this->client->submit($form);
+        $this->assertResponseRedirects('/document/4');
+        $responseCrawler = $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('div.alert-warning', 'Invalid security token');
+
+        $this->em->clear();
+        $postCount = count($repo->findAll());
+        $this->assertSame($preCount, $postCount);
     }
 
     public function testAdminDeleteWrongPdf() : void {

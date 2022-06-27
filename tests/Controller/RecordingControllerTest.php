@@ -305,6 +305,12 @@ class RecordingControllerTest extends ControllerTestCase {
         $manager->setCopy(false);
     }
 
+    public function testAdminEditWrongAudio() : void {
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/recording/1/edit_audio/7');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
     public function testAnonDeleteAudio() : void {
         $crawler = $this->client->request('DELETE', '/recording/1/delete_audio/6');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
@@ -333,6 +339,27 @@ class RecordingControllerTest extends ControllerTestCase {
         $this->em->clear();
         $postCount = count($repo->findAll());
         $this->assertSame($preCount - 1, $postCount);
+    }
+
+    public function testAdminDeleteAudioWrongCSRF() : void {
+        $repo = self::$container->get(AudioRepository::class);
+        $preCount = count($repo->findAll());
+
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/recording/4');
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form.delete-form[action="/recording/4/delete_audio/9"]')->form();
+        $form['_token'] = 'abc1234';
+        $this->client->submit($form);
+        $this->assertResponseRedirects('/recording/4');
+        $responseCrawler = $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('div.alert-warning', 'Invalid security token');
+
+        $this->em->clear();
+        $postCount = count($repo->findAll());
+        $this->assertSame($preCount, $postCount);
     }
 
     public function testAdminDeleteWrongAudio() : void {

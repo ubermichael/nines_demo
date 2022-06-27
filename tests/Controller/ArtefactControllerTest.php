@@ -305,6 +305,12 @@ class ArtefactControllerTest extends ControllerTestCase {
         $manager->setCopy(false);
     }
 
+    public function testAdminEditWrongImage() : void {
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/artefact/1/edit_image/5');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
     public function testAnonDeleteImage() : void {
         $crawler = $this->client->request('DELETE', '/artefact/1/delete_image/1');
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
@@ -333,6 +339,27 @@ class ArtefactControllerTest extends ControllerTestCase {
         $this->em->clear();
         $postCount = count($repo->findAll());
         $this->assertSame($preCount - 1, $postCount);
+    }
+
+    public function testAdminDeleteImageWrongCSRF() : void {
+        $repo = self::$container->get(ImageRepository::class);
+        $preCount = count($repo->findAll());
+
+        $this->login(UserFixtures::ADMIN);
+        $crawler = $this->client->request('GET', '/artefact/4');
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form.delete-form[action="/artefact/4/delete_image/4"]')->form();
+        $form['_token'] = 'abc1234';
+        $this->client->submit($form);
+        $this->assertResponseRedirects('/artefact/4');
+        $responseCrawler = $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('div.alert-warning', 'Invalid security token');
+
+        $this->em->clear();
+        $postCount = count($repo->findAll());
+        $this->assertSame($preCount, $postCount);
     }
 
     public function testAdminDeleteWrongImage() : void {
